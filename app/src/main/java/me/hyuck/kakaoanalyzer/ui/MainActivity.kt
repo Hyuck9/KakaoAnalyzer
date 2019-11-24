@@ -1,7 +1,8 @@
-package me.hyuck.kakaoanalyzer
+package me.hyuck.kakaoanalyzer.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import me.hyuck.kakaoanalyzer.R
 
 class MainActivity : AppCompatActivity() {
 

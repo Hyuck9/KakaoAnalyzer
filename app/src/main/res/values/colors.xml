@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#3F51B5</color>
+    <color name="colorAccent">#283593</color>
+    <color name="colorDracula">#323232</color>
+    <color name="colorFabPink">#FF4081</color>
+    <color name="colorFabGreen">#4CAF50</color>
+    <color name="colorFabSky">#2196F3</color>
+    <color name="fab_location_color">#2196F3</color>
+    <color name="colorBackgroundRippleAccident">#7E4E04</color>
+    <color name="colorBackgroundRippleFire">#FFFF00</color>
+
+    <color name="deepPurple">#7C4DFF</color>
+    <color name="materialYellow">#FFB300</color>
+    <color name="materialGreen">#00BFA5</color>
+    <color name="primaryYellow">#FFC107</color>
+    <color name="primaryDarkYellow">#FFA000</color>
+    <color name="background_light">#FAFAFA</color>
+    <color name="scrim">#99323232</color>
+
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="transparent">#0fff</color>
+    <color name="colorLightGray">#999999</color>
 </resources>
