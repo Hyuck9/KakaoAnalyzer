@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">KakaoAnalyzer</string>
+    <string name="loading_chat_list">loading...</string>
 </resources>
