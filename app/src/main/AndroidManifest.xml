@@ -25,7 +25,10 @@
         </activity>
         <activity
             android:name=".ui.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.statistics.StatisticsActivity"
+            android:label="분석결과" />
     </application>
 
 </manifest>
