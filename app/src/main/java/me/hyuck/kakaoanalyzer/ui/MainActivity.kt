@@ -1,7 +1,6 @@
 package me.hyuck.kakaoanalyzer.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -51,7 +50,6 @@ class MainActivity : AppCompatActivity() {
             this,
             Observer<List<Chat>> { chatEntities: List<Chat>? ->
                 if (chatEntities != null) {
-                    Log.d("TEST", "chatEntities : ${chatEntities[0].title}")
                     binding.isLoading = false
                     chatAdapter.setChatList(chatEntities)
                 } else {
@@ -64,8 +62,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-//        if ( viewModel.isChatExsist() ) {
-//            viewModel.parseChatInfo()
-//        }
+        if ( viewModel.isChatExsist() ) {
+            viewModel.parseChatInfo()
+        }
     }
 }
