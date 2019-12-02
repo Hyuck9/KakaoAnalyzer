@@ -55,7 +55,8 @@ object StringUtils {
         return Pattern.matches(FIRST_DATE_TIME_PATTERN_STRING, str)
     }
 
-    fun getFormattedNumber(number: Int): String? {
+    @JvmStatic
+    fun getFormattedNumber(number: Int): String {
         val myFormatter = DecimalFormat("###,###")
         return myFormatter.format(number.toLong())
     }

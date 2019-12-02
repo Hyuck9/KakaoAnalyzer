@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.hyuck.kakaoanalyzer.db.AppDatabase
 import me.hyuck.kakaoanalyzer.db.entity.Chat
+import me.hyuck.kakaoanalyzer.util.DateUtils
 import me.hyuck.kakaoanalyzer.util.StringUtils
 import java.io.BufferedReader
 import java.io.File
@@ -25,17 +26,10 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
     @Suppress("PrivatePropertyName")
     private val TAG:String? = ChatViewModel::class.simpleName
 
-
-
-    private var chats: LiveData<List<Chat>>
-
     @Suppress("DEPRECATION")
     private val txtFilePath = Environment.getExternalStorageDirectory().absolutePath + "/KakaoTalk/Chats"
     private val txtFileName = "KakaoTalkChats.txt"
 
-    init {
-        chats = getAllChats()
-    }
 
     fun getAllChats(): LiveData<List<Chat>> {
         return db!!.chatDao().getAllChats()
@@ -121,8 +115,11 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
             BufferedReader(FileReader(file)).use { br ->
                 val title = br.readLine()
                 val date = br.readLine()
+                // 공백 두줄 읽기
+                br.readLine()
+                br.readLine()
                 val size: String = StringUtils.parseMemory(file.length())
-                val chat = Chat(title, date, size, filePath)
+                val chat = Chat(title, date, size, filePath, br.readLine())
                 insertChat(chat)
                 Log.i(TAG, "chat : $chat")
             }

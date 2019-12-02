@@ -1,16 +1,28 @@
 package me.hyuck.kakaoanalyzer.ui.statistics
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.ViewModelProviders
 import me.hyuck.kakaoanalyzer.R
 import me.hyuck.kakaoanalyzer.databinding.ActivityStatisticsBinding
-import java.util.*
+import me.hyuck.kakaoanalyzer.db.entity.Chat
+import me.hyuck.kakaoanalyzer.ui.statistics.basic.BasicInfoFragment
+import me.hyuck.kakaoanalyzer.viewmodel.StatisticsViewModel
 
 class StatisticsActivity : AppCompatActivity() {
+
+    companion object {
+        const val EXTRA_CHAT_ID = "me.hyuck.kakaoanalyzer.ui.statistics.EXTRA_CHAT_ID"
+        const val EXTRA_CHAT = "me.hyuck.kakaoanalyzer.ui.statistics.EXTRA_CHAT"
+        const val EXTRA_TITLE = "me.hyuck.kakaoanalyzer.ui.statistics.EXTRA_TITLE"
+    }
+
+    private lateinit var viewModel: StatisticsViewModel
 
     private lateinit var binding: ActivityStatisticsBinding
 
@@ -18,15 +30,22 @@ class StatisticsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_statistics)
 
+        viewModel = ViewModelProviders.of(this).get(StatisticsViewModel::class.java)
+
+        binding.toolbarTitle.text = intent.getStringExtra(EXTRA_TITLE)
+
+        val chat = intent.getSerializableExtra(EXTRA_CHAT) as Chat
+        viewModel.parseChatContent(chat)
+
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.arrow_back)
 
         setViewPager()
     }
 
-    fun setViewPager() {
+    private fun setViewPager() {
         val adapter = ViewPagerAdapter(supportFragmentManager)
-        //TODO: Add Fragment
+        adapter.addFragment(BasicInfoFragment(), "기본정보")
         binding.viewPager.adapter = adapter
         binding.tabs.setupWithViewPager(binding.viewPager)
     }
@@ -48,4 +67,8 @@ class StatisticsActivity : AppCompatActivity() {
             fragmentTitleList.add(title)
         }
     }
+
+
+
+
 }

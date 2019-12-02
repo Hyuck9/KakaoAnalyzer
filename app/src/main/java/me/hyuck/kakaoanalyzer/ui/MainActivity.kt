@@ -1,7 +1,7 @@
 package me.hyuck.kakaoanalyzer.ui
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
@@ -12,6 +12,7 @@ import me.hyuck.kakaoanalyzer.R
 import me.hyuck.kakaoanalyzer.adapter.ChatListAdapter
 import me.hyuck.kakaoanalyzer.databinding.ActivityMainBinding
 import me.hyuck.kakaoanalyzer.db.entity.Chat
+import me.hyuck.kakaoanalyzer.ui.statistics.StatisticsActivity
 import me.hyuck.kakaoanalyzer.viewmodel.ChatViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -39,7 +40,11 @@ class MainActivity : AppCompatActivity() {
         chatAdapter = ChatListAdapter()
         chatAdapter.setItemClickListener(object: ChatListAdapter.OnItemClickListener{
             override fun OnItemClick(chat: Chat?) {
-                Toast.makeText(this@MainActivity, "onItemClick - ${chat.toString()}", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@MainActivity, StatisticsActivity::class.java)
+                intent.putExtra(StatisticsActivity.EXTRA_CHAT_ID, chat!!.id)
+                intent.putExtra(StatisticsActivity.EXTRA_TITLE, chat.title)
+                intent.putExtra(StatisticsActivity.EXTRA_CHAT, chat)
+                startActivity(intent)
             }
         })
         binding.rvChatList.adapter = chatAdapter
