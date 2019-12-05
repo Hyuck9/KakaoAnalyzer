@@ -12,7 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.hyuck.kakaoanalyzer.db.AppDatabase
 import me.hyuck.kakaoanalyzer.db.entity.Chat
-import me.hyuck.kakaoanalyzer.util.DateUtils
 import me.hyuck.kakaoanalyzer.util.StringUtils
 import java.io.BufferedReader
 import java.io.File

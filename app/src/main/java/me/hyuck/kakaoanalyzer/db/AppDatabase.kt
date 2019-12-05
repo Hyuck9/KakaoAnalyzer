@@ -5,12 +5,18 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import me.hyuck.kakaoanalyzer.db.dao.ChatDao
+import me.hyuck.kakaoanalyzer.db.dao.KeywordDao
+import me.hyuck.kakaoanalyzer.db.dao.MessageDao
 import me.hyuck.kakaoanalyzer.db.entity.Chat
+import me.hyuck.kakaoanalyzer.db.entity.Keyword
+import me.hyuck.kakaoanalyzer.db.entity.Message
 
-@Database(entities = [Chat::class], version = 1)
+@Database(entities = [Chat::class, Message::class, Keyword::class], version = 1)
 abstract class AppDatabase: RoomDatabase() {
 
     abstract fun chatDao(): ChatDao
+    abstract fun messageDao(): MessageDao
+    abstract fun keywordDao(): KeywordDao
 
     companion object {
         private var instance: AppDatabase? = null
