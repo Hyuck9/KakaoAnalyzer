@@ -10,14 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import me.hyuck.kakaoanalyzer.R
 import me.hyuck.kakaoanalyzer.databinding.FragmentBasicInfoBinding
-import me.hyuck.kakaoanalyzer.viewmodel.StatisticsViewModel
 
 /**
  * A simple [Fragment] subclass.
  */
 class BasicInfoFragment : Fragment() {
 
-    private lateinit var viewModel: StatisticsViewModel
+    private lateinit var viewModel: BasicInfoViewModel
     private lateinit var binding: FragmentBasicInfoBinding
 
     override fun onCreateView(
@@ -32,7 +31,7 @@ class BasicInfoFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(requireActivity()).get(StatisticsViewModel::class.java)
+        viewModel = ViewModelProviders.of(requireActivity()).get(BasicInfoViewModel::class.java)
         binding.viewModel = viewModel
     }
 

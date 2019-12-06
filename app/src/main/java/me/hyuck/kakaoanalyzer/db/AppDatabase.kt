@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import me.hyuck.kakaoanalyzer.db.conveter.DateConverter
 import me.hyuck.kakaoanalyzer.db.dao.ChatDao
 import me.hyuck.kakaoanalyzer.db.dao.KeywordDao
 import me.hyuck.kakaoanalyzer.db.dao.MessageDao
@@ -12,6 +14,7 @@ import me.hyuck.kakaoanalyzer.db.entity.Keyword
 import me.hyuck.kakaoanalyzer.db.entity.Message
 
 @Database(entities = [Chat::class, Message::class, Keyword::class], version = 1)
+@TypeConverters(DateConverter::class)
 abstract class AppDatabase: RoomDatabase() {
 
     abstract fun chatDao(): ChatDao

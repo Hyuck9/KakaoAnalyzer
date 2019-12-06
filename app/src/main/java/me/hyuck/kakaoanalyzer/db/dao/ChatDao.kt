@@ -8,7 +8,7 @@ import me.hyuck.kakaoanalyzer.db.entity.Chat
 interface ChatDao {
 
     @Insert
-    fun insert(chat: Chat)
+    fun insert(chat: Chat): Long
 
     @Update
     fun update(chat: Chat)

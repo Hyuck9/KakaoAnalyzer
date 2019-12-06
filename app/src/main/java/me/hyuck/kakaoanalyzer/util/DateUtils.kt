@@ -36,6 +36,12 @@ object DateUtils {
         return format.format(date)
     }
 
+    fun convertDateToStringFormat(date: Date, sFormat: String): String {
+        @SuppressLint("SimpleDateFormat")
+        val format = SimpleDateFormat(sFormat)
+        return format.format(date)
+    }
+
     fun convertStringToDate(sDate: String): Date {
         @SuppressLint("SimpleDateFormat")
         val dateParser: DateFormat = SimpleDateFormat("yyyy년 MM월 dd일 a hh:mm")

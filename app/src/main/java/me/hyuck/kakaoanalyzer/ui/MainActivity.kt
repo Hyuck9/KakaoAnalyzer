@@ -13,7 +13,6 @@ import me.hyuck.kakaoanalyzer.adapter.ChatListAdapter
 import me.hyuck.kakaoanalyzer.databinding.ActivityMainBinding
 import me.hyuck.kakaoanalyzer.db.entity.Chat
 import me.hyuck.kakaoanalyzer.ui.statistics.StatisticsActivity
-import me.hyuck.kakaoanalyzer.viewmodel.ChatViewModel
 
 class MainActivity : AppCompatActivity() {
 

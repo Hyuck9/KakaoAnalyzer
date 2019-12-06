@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import me.hyuck.kakaoanalyzer.db.entity.Message
+import java.util.*
 
 @Dao
 interface MessageDao {
@@ -19,5 +20,11 @@ interface MessageDao {
 
     @Query("SELECT COUNT(*) FROM message_info WHERE chatId = :chatId")
     fun getMessageCount(chatId: Long): LiveData<Int>
+
+    @Query("SELECT MIN(dateTime) AS dateTime FROM message_info WHERE chatId = :chatId")
+    fun getStartDate(chatId: Long): Date
+
+    @Query("SELECT MAX(dateTime) AS dateTime FROM message_info WHERE chatId = :chatId")
+    fun getEndDate(chatId: Long): Date
 
 }

@@ -6,7 +6,7 @@
         <import type="me.hyuck.kakaoanalyzer.util.StringUtils"/>
         <variable
             name="viewModel"
-            type="me.hyuck.kakaoanalyzer.viewmodel.StatisticsViewModel" />
+            type="me.hyuck.kakaoanalyzer.ui.statistics.basic.BasicInfoViewModel" />
     </data>
 
     <LinearLayout

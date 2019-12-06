@@ -1,7 +1,6 @@
 package me.hyuck.kakaoanalyzer.ui.statistics
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -13,7 +12,7 @@ import me.hyuck.kakaoanalyzer.R
 import me.hyuck.kakaoanalyzer.databinding.ActivityStatisticsBinding
 import me.hyuck.kakaoanalyzer.db.entity.Chat
 import me.hyuck.kakaoanalyzer.ui.statistics.basic.BasicInfoFragment
-import me.hyuck.kakaoanalyzer.viewmodel.StatisticsViewModel
+import me.hyuck.kakaoanalyzer.ui.statistics.basic.BasicInfoViewModel
 
 class StatisticsActivity : AppCompatActivity() {
 
@@ -23,7 +22,7 @@ class StatisticsActivity : AppCompatActivity() {
         const val EXTRA_TITLE = "me.hyuck.kakaoanalyzer.ui.statistics.EXTRA_TITLE"
     }
 
-    private lateinit var viewModel: StatisticsViewModel
+    private lateinit var basicViewModel: BasicInfoViewModel
 
     private lateinit var binding: ActivityStatisticsBinding
 
@@ -31,12 +30,12 @@ class StatisticsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_statistics)
 
-        viewModel = ViewModelProviders.of(this).get(StatisticsViewModel::class.java)
+        basicViewModel = ViewModelProviders.of(this).get(BasicInfoViewModel::class.java)
 
         binding.toolbarTitle.text = intent.getStringExtra(EXTRA_TITLE)
 
-        val chat = intent.getSerializableExtra(EXTRA_CHAT) as Chat
-        viewModel.parseChatContent(chat)
+        val chatId = intent.getLongExtra(EXTRA_CHAT_ID, 0)
+        basicViewModel.setData(chatId)
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.arrow_back)
