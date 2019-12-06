@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import me.hyuck.kakaoanalyzer.db.entity.Keyword
-import me.hyuck.kakaoanalyzer.db.entity.Message
+import me.hyuck.kakaoanalyzer.model.KeywordInfo
 
 @Dao
 interface KeywordDao {
@@ -15,7 +15,9 @@ interface KeywordDao {
     @Query("DELETE FROM keyword_info WHERE chatId = :chatId")
     fun deleteAllKeywordsFromChatId(chatId: Long)
 
-    @Query("SELECT COUNT(*) FROM keyword_info WHERE chatId = :chatId")
+    @Query("SELECT COUNT(DISTINCT keyword) FROM keyword_info WHERE chatId = :chatId")
     fun getKeywordCount(chatId: Long): LiveData<Int>
 
+    @Query("SELECT keyword, COUNT(*) AS count FROM keyword_info WHERE chatId = :chatId GROUP BY keyword ORDER BY count DESC")
+    fun getKeywordInfo(chatId: Long): LiveData<List<KeywordInfo>>
 }

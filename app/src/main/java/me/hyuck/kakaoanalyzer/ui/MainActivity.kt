@@ -36,8 +36,7 @@ class MainActivity : AppCompatActivity() {
     private fun initRecyclerView() {
         binding.rvChatList.layoutManager = LinearLayoutManager(this)
         binding.rvChatList.setHasFixedSize(true)
-        chatAdapter = ChatListAdapter()
-        chatAdapter.setItemClickListener(object: ChatListAdapter.OnItemClickListener{
+        chatAdapter = ChatListAdapter(object: ChatListAdapter.OnItemClickListener {
             override fun OnItemClick(chat: Chat?) {
                 val intent = Intent(this@MainActivity, StatisticsActivity::class.java)
                 intent.putExtra(StatisticsActivity.EXTRA_CHAT_ID, chat!!.id)

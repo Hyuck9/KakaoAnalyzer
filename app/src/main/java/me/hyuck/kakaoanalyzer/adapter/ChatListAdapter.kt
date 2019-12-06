@@ -10,14 +10,14 @@ import me.hyuck.kakaoanalyzer.R
 import me.hyuck.kakaoanalyzer.databinding.ChatListItemBinding
 import me.hyuck.kakaoanalyzer.db.entity.Chat
 
-class ChatListAdapter : RecyclerView.Adapter<ChatListAdapter.ChatViewHolder>() {
-    private var mChatList: List<Chat?>? = null
-    private lateinit var clickCallback: OnItemClickListener
+class ChatListAdapter(listener: OnItemClickListener) : RecyclerView.Adapter<ChatListAdapter.ChatViewHolder>() {
+    private var mChatList: List<Chat>? = null
+    private var clickCallback: OnItemClickListener = listener
 
     /**
-     * chatList에 add/remove 를 할지 set 을 할지 고민중...
+     * chatList data setting
      */
-    fun setChatList(chatList: List<Chat?>) {
+    fun setChatList(chatList: List<Chat>) {
         if (mChatList == null) {
             mChatList = chatList
             notifyItemRangeInserted(0, chatList.size)
@@ -35,7 +35,7 @@ class ChatListAdapter : RecyclerView.Adapter<ChatListAdapter.ChatViewHolder>() {
                     oldItemPosition: Int,
                     newItemPosition: Int
                 ): Boolean {
-                    return mChatList!![oldItemPosition]!!.id == chatList[newItemPosition]!!.id
+                    return mChatList!![oldItemPosition].id == chatList[newItemPosition].id
                 }
 
                 override fun areContentsTheSame(
@@ -89,7 +89,7 @@ class ChatListAdapter : RecyclerView.Adapter<ChatListAdapter.ChatViewHolder>() {
     }
 
     override fun getItemId(position: Int): Long {
-        return mChatList!![position]!!.id
+        return mChatList!![position].id
     }
 
     /**
@@ -97,10 +97,6 @@ class ChatListAdapter : RecyclerView.Adapter<ChatListAdapter.ChatViewHolder>() {
      */
     interface OnItemClickListener {
         fun OnItemClick(chat: Chat?)
-    }
-
-    fun setItemClickListener(listener: OnItemClickListener) {
-        clickCallback = listener
     }
 
     class ChatViewHolder(val binding: ChatListItemBinding) : RecyclerView.ViewHolder(binding.root)
