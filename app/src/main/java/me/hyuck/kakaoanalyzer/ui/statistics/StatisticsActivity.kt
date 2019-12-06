@@ -13,6 +13,7 @@ import me.hyuck.kakaoanalyzer.databinding.ActivityStatisticsBinding
 import me.hyuck.kakaoanalyzer.ui.statistics.basic.BasicInfoFragment
 import me.hyuck.kakaoanalyzer.ui.statistics.basic.BasicInfoViewModel
 import me.hyuck.kakaoanalyzer.ui.statistics.keyword.KeywordFragment
+import me.hyuck.kakaoanalyzer.ui.statistics.participant.ParticipantFragment
 import me.hyuck.kakaoanalyzer.ui.statistics.time.TimeSeriesFragment
 
 class StatisticsActivity : AppCompatActivity() {
@@ -49,6 +50,7 @@ class StatisticsActivity : AppCompatActivity() {
     private fun setViewPager() {
         val adapter = ViewPagerAdapter(supportFragmentManager)
         adapter.addFragment(BasicInfoFragment(), "기본정보")
+        adapter.addFragment(ParticipantFragment(), "사용자")
         adapter.addFragment(KeywordFragment(), "키워드")
         adapter.addFragment(TimeSeriesFragment(), "시간대")
         binding.viewPager.adapter = adapter
