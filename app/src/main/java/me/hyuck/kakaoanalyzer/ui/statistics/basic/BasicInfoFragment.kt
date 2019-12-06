@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import me.hyuck.kakaoanalyzer.R
 import me.hyuck.kakaoanalyzer.databinding.FragmentBasicInfoBinding
+import me.hyuck.kakaoanalyzer.ui.statistics.StatisticsActivity
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -32,6 +34,8 @@ class BasicInfoFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(requireActivity()).get(BasicInfoViewModel::class.java)
+        val chatId: Long = (Objects.requireNonNull(activity) as StatisticsActivity).chatId
+        viewModel.setData(chatId)
         binding.viewModel = viewModel
     }
 

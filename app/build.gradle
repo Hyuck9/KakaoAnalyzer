@@ -23,6 +23,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
     dataBinding {
         enabled = true
     }
@@ -58,4 +61,6 @@ dependencies {
     /* Debug Room Database */
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 
+    /* MPAndroidChart */
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

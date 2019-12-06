@@ -10,9 +10,9 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.ViewModelProviders
 import me.hyuck.kakaoanalyzer.R
 import me.hyuck.kakaoanalyzer.databinding.ActivityStatisticsBinding
-import me.hyuck.kakaoanalyzer.db.entity.Chat
 import me.hyuck.kakaoanalyzer.ui.statistics.basic.BasicInfoFragment
 import me.hyuck.kakaoanalyzer.ui.statistics.basic.BasicInfoViewModel
+import me.hyuck.kakaoanalyzer.ui.statistics.time.TimeSeriesFragment
 
 class StatisticsActivity : AppCompatActivity() {
 
@@ -26,6 +26,8 @@ class StatisticsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityStatisticsBinding
 
+    var chatId: Long = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_statistics)
@@ -34,7 +36,7 @@ class StatisticsActivity : AppCompatActivity() {
 
         binding.toolbarTitle.text = intent.getStringExtra(EXTRA_TITLE)
 
-        val chatId = intent.getLongExtra(EXTRA_CHAT_ID, 0)
+        chatId = intent.getLongExtra(EXTRA_CHAT_ID, 0)
         basicViewModel.setData(chatId)
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -46,6 +48,7 @@ class StatisticsActivity : AppCompatActivity() {
     private fun setViewPager() {
         val adapter = ViewPagerAdapter(supportFragmentManager)
         adapter.addFragment(BasicInfoFragment(), "기본정보")
+        adapter.addFragment(TimeSeriesFragment(), "시간대")
         binding.viewPager.adapter = adapter
         binding.tabs.setupWithViewPager(binding.viewPager)
     }
