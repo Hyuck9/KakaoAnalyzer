@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.hyuck.kakaoanalyzer.db.AppDatabase
-import me.hyuck.kakaoanalyzer.db.entity.Chat
 import me.hyuck.kakaoanalyzer.util.DateUtils
 import java.util.*
 
