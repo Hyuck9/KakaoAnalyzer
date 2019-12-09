@@ -14,6 +14,7 @@ import me.hyuck.kakaoanalyzer.R
 import me.hyuck.kakaoanalyzer.adapter.ChatListAdapter
 import me.hyuck.kakaoanalyzer.databinding.ActivityMainBinding
 import me.hyuck.kakaoanalyzer.db.entity.Chat
+import me.hyuck.kakaoanalyzer.ui.guide.GuideActivity
 import me.hyuck.kakaoanalyzer.ui.statistics.StatisticsActivity
 
 class MainActivity : AppCompatActivity() {
@@ -36,7 +37,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         binding.btnHelp.setOnClickListener {
-            Toast.makeText(this@MainActivity, "TEST", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this@MainActivity, GuideActivity::class.java)
+            startActivity(intent)
         }
 
         initRecyclerView()
