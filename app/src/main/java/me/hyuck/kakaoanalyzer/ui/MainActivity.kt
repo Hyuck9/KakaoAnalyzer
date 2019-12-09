@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnGoKakao.setOnClickListener {
             val intent = packageManager.getLaunchIntentForPackage("com.kakao.talk")
-            intent!!.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         }
 

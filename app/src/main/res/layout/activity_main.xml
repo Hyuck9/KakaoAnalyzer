@@ -35,10 +35,11 @@
                         android:id="@+id/btn_go_kakao"
                         android:layout_width="64dp"
                         android:layout_height="64dp"
+                        android:layout_marginBottom="32dp"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/test"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
                         android:foreground="?android:attr/selectableItemBackground"
                         app:cardBackgroundColor="@color/colorBackgroundKakao" >
                         <ImageView
@@ -46,20 +47,26 @@
                             android:layout_height="match_parent"
                             android:src="@drawable/kakaotalk_icon"/>
                     </androidx.cardview.widget.CardView>
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="카카오톡으로 이동"
+                        app:layout_constraintEnd_toStartOf="@+id/test"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btn_go_kakao" />
 
                     <View
                         android:id="@+id/test"
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginBottom="24dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-
                         android:alpha="0.3"
-                        android:background="@color/colorLightGray"/>
+                        android:background="@drawable/fade_vertical_gray"/>
 
                     <ImageView
                         android:id="@+id/imageView2"
@@ -71,15 +78,15 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/ic_launcher_foreground" />
 
-                    <TextView
-                        android:id="@+id/textView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="카카오톡으로 이동"
-                        app:layout_constraintEnd_toStartOf="@+id/test"
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/btn_go_kakao" />
+                        android:alpha="0.3"
+                        android:background="@drawable/fade_horizontal_gray"/>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.appcompat.widget.Toolbar

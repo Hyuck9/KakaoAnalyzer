@@ -147,7 +147,7 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
                         Log.d(TAG, "[2] [메시지형태체크] ['10월 24일 오전 10:44,' 형식으로 시작하는 데이터]")
                         if (message != null) {
                             Log.i(TAG, "[3] [Null체크] [하나의 완성된 메시지 - 메시지 파싱 시작]")
-                            parseMessage(message.toString())
+                            parseMessage(message.toString().trim())
                         } else {
                             Log.w(TAG, "[3] [Null체크] [Null!!]")
                         }
@@ -170,7 +170,7 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
 
                 if (message != null) {
                     Log.i("parseChatFile", "[6] [Null체크] [마지막 메시지 - 메시지 파싱 시작]")
-                    parseMessage(message.toString())
+                    parseMessage(message.toString().trim())
                     insertData(chat)
                 } else {
                     Log.w(TAG, "[6] [Null체크] [Null!!]")
