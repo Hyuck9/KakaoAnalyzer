@@ -35,6 +35,9 @@ class MainActivity : AppCompatActivity() {
             val intent = packageManager.getLaunchIntentForPackage("com.kakao.talk")
             startActivity(intent)
         }
+        binding.btnHelp.setOnClickListener {
+            Toast.makeText(this@MainActivity, "TEST", Toast.LENGTH_SHORT).show()
+        }
 
         initRecyclerView()
         subscribeUi(viewModel.getAllChats())
