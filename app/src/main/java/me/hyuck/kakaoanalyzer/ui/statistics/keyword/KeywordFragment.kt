@@ -1,6 +1,7 @@
 package me.hyuck.kakaoanalyzer.ui.statistics.keyword
 
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,6 +26,7 @@ import me.hyuck.kakaoanalyzer.model.KeywordInfo
 import me.hyuck.kakaoanalyzer.ui.statistics.StatisticsActivity
 import me.hyuck.kakaoanalyzer.ui.statistics.common.PeiChartFragment
 import java.util.*
+import kotlin.properties.Delegates
 
 /**
  * A simple [Fragment] subclass.
@@ -34,6 +36,7 @@ class KeywordFragment : PeiChartFragment() {
     private lateinit var viewModel: KeywordViewModel
     private lateinit var binding: FragmentKeywordBinding
     private lateinit var adapter: KeywordAdapter
+    private var chatId by Delegates.notNull<Long>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +47,7 @@ class KeywordFragment : PeiChartFragment() {
 
         initChart(binding.keywordPieChart)
         initRecyclerView()
+        initButton()
 
         return binding.root
     }
@@ -52,7 +56,7 @@ class KeywordFragment : PeiChartFragment() {
         super.onActivityCreated(savedInstanceState)
 
         viewModel = ViewModelProviders.of(this).get(KeywordViewModel::class.java)
-        val chatId: Long = (Objects.requireNonNull(activity) as StatisticsActivity).chatId
+        chatId = (Objects.requireNonNull(activity) as StatisticsActivity).chatId
         viewModel.set10Data(chatId)
         subscribeUi(viewModel.keywordInfo)
     }
@@ -65,7 +69,9 @@ class KeywordFragment : PeiChartFragment() {
 
     private fun initButton() {
         binding.btnMoreKeyword.setOnClickListener {
-
+            val intent = Intent(requireContext(), KeywordActivity::class.java)
+            intent.putExtra(StatisticsActivity.EXTRA_CHAT_ID, chatId)
+            startActivity(intent)
         }
     }
 

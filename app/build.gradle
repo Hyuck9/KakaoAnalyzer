@@ -63,4 +63,6 @@ dependencies {
 
     /* MPAndroidChart */
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    implementation 'com.github.florent37:materialtextfield:1.0.7'
 }

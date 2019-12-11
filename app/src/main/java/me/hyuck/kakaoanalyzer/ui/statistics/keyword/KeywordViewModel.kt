@@ -15,8 +15,8 @@ class KeywordViewModel(application: Application): AndroidViewModel(application) 
     fun set10Data(chatId: Long) {
         keywordInfo = db!!.keywordDao().getKeywordInfoLimit10(chatId)
     }
-    fun setData(chatId: Long) {
-        keywordInfo = db!!.keywordDao().getKeywordInfo(chatId)
+    fun getAllData(chatId: Long): LiveData<List<KeywordInfo>>? {
+        return db!!.keywordDao().getKeywordInfo(chatId)
     }
 
 }

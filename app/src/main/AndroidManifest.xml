@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.guide.GuideActivity"></activity>
+        <activity android:name=".ui.statistics.keyword.KeywordActivity"></activity>
+        <activity android:name=".ui.guide.GuideActivity" />
         <activity
             android:name=".ui.SplashActivity"
             android:theme="@style/SplashTheme">
