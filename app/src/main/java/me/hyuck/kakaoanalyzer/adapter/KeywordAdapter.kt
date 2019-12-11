@@ -57,6 +57,7 @@ class KeywordAdapter : RecyclerView.Adapter<KeywordAdapter.KeywordViewHolder>() 
     override fun onBindViewHolder(holder: KeywordViewHolder, position: Int) {
         holder.binding.keyword = mKeywordList!![position]
         holder.binding.executePendingBindings()
+        holder.binding.root.requestLayout()
     }
 
     override fun getItemCount(): Int {

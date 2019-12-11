@@ -53,16 +53,20 @@ class KeywordFragment : PeiChartFragment() {
 
         viewModel = ViewModelProviders.of(this).get(KeywordViewModel::class.java)
         val chatId: Long = (Objects.requireNonNull(activity) as StatisticsActivity).chatId
-        viewModel.setData(chatId)
+        viewModel.set10Data(chatId)
         subscribeUi(viewModel.keywordInfo)
     }
 
     private fun initRecyclerView() {
-        binding.rvKeywordList.setHasFixedSize(true)
-
         adapter = KeywordAdapter()
         binding.rvKeywordList.adapter = adapter
         binding.rvKeywordList.addItemDecoration(DividerItemDecoration(requireContext(), 1))
+    }
+
+    private fun initButton() {
+        binding.btnMoreKeyword.setOnClickListener {
+
+        }
     }
 
     private fun subscribeUi(liveData: LiveData<List<KeywordInfo>>?) {
