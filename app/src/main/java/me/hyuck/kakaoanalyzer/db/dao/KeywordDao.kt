@@ -24,7 +24,7 @@ interface KeywordDao {
     @Query("SELECT keyword, COUNT(*) AS count FROM keyword_info WHERE chatId = :chatId GROUP BY keyword ORDER BY count DESC LIMIT 10")
     fun getKeywordInfoLimit10(chatId: Long): LiveData<List<KeywordInfo>>
 
-    @Query("SELECT * FROM (SELECT keyword, COUNT(*) AS count FROM keyword_info WHERE chatId = :chatId GROUP BY keyword ORDER BY count DESC) WHERE keyword MATCH :query")
+    @Query("SELECT keyword, COUNT(*) AS count FROM keyword_info WHERE chatId = :chatId AND keyword LIKE :query GROUP BY keyword ORDER BY count DESC")
     fun findKeywordInfo(chatId: Long, query: String): LiveData<List<KeywordInfo>>
 
     @Query("SELECT COUNT(*) FROM keyword_info WHERE chatId = :chatId")

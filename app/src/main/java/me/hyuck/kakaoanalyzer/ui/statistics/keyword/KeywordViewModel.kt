@@ -25,6 +25,6 @@ class KeywordViewModel(application: Application): AndroidViewModel(application) 
         return if (keyword == null || keyword.isEmpty())
             db!!.keywordDao().getKeywordInfo(chatId)
         else
-            db!!.keywordDao().findKeywordInfo(chatId, "*${keyword}*")
+            db!!.keywordDao().findKeywordInfo(chatId, "%${keyword}%")
     }
 }

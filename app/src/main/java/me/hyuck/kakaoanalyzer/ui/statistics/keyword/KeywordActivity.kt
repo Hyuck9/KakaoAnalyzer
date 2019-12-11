@@ -1,6 +1,8 @@
 package me.hyuck.kakaoanalyzer.ui.statistics.keyword
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -34,6 +36,19 @@ class KeywordActivity : AppCompatActivity() {
         val chatId = intent.getLongExtra(StatisticsActivity.EXTRA_CHAT_ID, 0)
         binding.viewModel = viewModel
         subscribeUi(viewModel.getAllData(chatId))
+
+        binding.search.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                subscribeUi(viewModel.findData(chatId, s.toString()))
+            }
+
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
