@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <import type="me.hyuck.kakaoanalyzer.util.StringUtils"/>
+        <variable
+            name="viewModel"
+            type="me.hyuck.kakaoanalyzer.ui.statistics.keyword.KeywordViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,9 +41,12 @@
             android:id="@+id/textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/colorLightGray"
+            android:background="@color/colorAccent"
             android:padding="16dp"
             android:text="합계"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimary"
             app:layout_constraintEnd_toStartOf="@+id/text_sum_count"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/materialTextField" />
@@ -45,9 +55,12 @@
             android:id="@+id/text_sum_count"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/colorLightGray"
+            android:background="@color/colorAccent"
             android:padding="16dp"
-            android:text="1234회"
+            android:text="@{StringUtils.getFormattedNumber(viewModel.totalCount)}"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimary"
             android:textAlignment="viewEnd"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView"

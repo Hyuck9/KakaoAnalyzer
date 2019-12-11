@@ -61,6 +61,13 @@ object StringUtils {
         return myFormatter.format(number.toLong())
     }
 
+    @JvmStatic
+    fun getFormattedNumber(number: String?): String {
+        if (number == null) return "0 회"
+        val myFormatter = DecimalFormat("###,###")
+        return "${myFormatter.format(number.toLong())} 회"
+    }
+
     fun isNotDateTimeMessage(str: String): Boolean {
         return !isDateTimeMessage(str)
     }

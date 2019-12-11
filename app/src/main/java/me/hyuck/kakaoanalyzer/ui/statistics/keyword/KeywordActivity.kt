@@ -23,6 +23,7 @@ class KeywordActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_keyword)
+        binding.lifecycleOwner = this
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.arrow_back)
@@ -31,6 +32,7 @@ class KeywordActivity : AppCompatActivity() {
 
         viewModel = ViewModelProviders.of(this).get(KeywordViewModel::class.java)
         val chatId = intent.getLongExtra(StatisticsActivity.EXTRA_CHAT_ID, 0)
+        binding.viewModel = viewModel
         subscribeUi(viewModel.getAllData(chatId))
     }
 
