@@ -32,6 +32,9 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
     private lateinit var messages: MutableList<Message>
     private lateinit var keywords: MutableList<Keyword>
 
+    private lateinit var startDate: Date
+    private lateinit var endDate: Date
+
 
     fun getAllChats(): LiveData<List<Chat>> {
         return db!!.chatDao().getAllChats()
@@ -138,8 +141,10 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
             BufferedReader(FileReader(file)).use { br ->
                 val title = br.readLine()
                 val date = br.readLine()
+                br.readLine()
+                br.readLine()
+                startDate = DateUtils.convertStringToDate(br.readLine())
                 val size: String = StringUtils.parseMemory(file.length())
-                val chat = Chat(title, date, size, filePath)
                 var message: StringBuilder? = null
                 var read: String?
                 while (br.readLine().also { read = it } != null) {
@@ -171,7 +176,7 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
                 if (message != null) {
                     Log.i("parseChatFile", "[6] [Null체크] [마지막 메시지 - 메시지 파싱 시작]")
                     parseMessage(message.toString().trim())
-                    insertData(chat)
+                    insertData(Chat(title, date, size, filePath, startDate, endDate))
                 } else {
                     Log.w(TAG, "[6] [Null체크] [Null!!]")
                 }
@@ -203,12 +208,13 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
         // TODO: Message Parsing And Insert Message
         val firstSplitIndex = msg.indexOf(" : ")
         val dateAndName = msg.split(" : ").toTypedArray()[0]
-        val dateTime: Date = DateUtils.convertStringToDate(dateAndName.split(", ").toTypedArray()[0])
+//        val dateTime: Date = DateUtils.convertStringToDate(dateAndName.split(", ").toTypedArray()[0])
+        endDate = DateUtils.convertStringToDate(dateAndName.split(", ").toTypedArray()[0])
         val userName = dateAndName.split(", ").toTypedArray()[1]
         val content = msg.substring(firstSplitIndex + 3)
         val calendar = GregorianCalendar.getInstance()
-        calendar.time = dateTime
-        val message = Message(0, dateTime, userName, content, calendar[Calendar.HOUR_OF_DAY])
+        calendar.time = endDate
+        val message = Message(0, endDate, userName, content, calendar[Calendar.HOUR_OF_DAY])
         messages.add(message)
         if (StringUtils.isPassedMessage(content)) {
             Log.d(TAG, "[MESSAGE] [PASS] [$content]")
