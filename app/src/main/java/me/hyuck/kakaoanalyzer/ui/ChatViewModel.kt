@@ -192,7 +192,8 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
     }
 
     /**
-     * 각 메시지 파싱 ex) 2019년 6월 12일 오전 1:24, 김영훈 : 과외가 어딨냐 시골에
+     * 각 메시지 파싱
+     * ex) 2019년 6월 12일 오전 1:24, 김영훈 : 과외가 어딨냐 시골에
      */
     private fun parseMessage(msg: String) {
         if (StringUtils.isPassedInOutMessage(msg)) {
