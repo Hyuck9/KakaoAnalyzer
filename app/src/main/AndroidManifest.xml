@@ -14,8 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.statistics.keyword.KeywordActivity"></activity>
-        <activity android:name=".ui.guide.GuideActivity" />
         <activity
             android:name=".ui.SplashActivity"
             android:theme="@style/SplashTheme">
@@ -28,9 +26,15 @@
         <activity
             android:name=".ui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.guide.GuideActivity"
+            android:label="사용법" />
         <activity
             android:name=".ui.statistics.StatisticsActivity"
             android:label="분석결과" />
+        <activity android:name=".ui.statistics.participant.ParticipantActivity"
+            android:label="사용자별 채팅횟수" />
+        <activity android:name=".ui.statistics.keyword.KeywordActivity"
+            android:label="키워드 사용횟수" />
     </application>
 
 </manifest>

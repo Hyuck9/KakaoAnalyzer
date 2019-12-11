@@ -32,6 +32,15 @@ interface MessageDao {
     @Query("SELECT userName, COUNT(*) AS count FROM message_info WHERE chatId = :chatId GROUP BY userName ORDER BY count DESC")
     fun getParticipantInfo(chatId: Long): LiveData<List<ParticipantInfo>>
 
+    @Query("SELECT userName, COUNT(*) AS count FROM message_info WHERE chatId = :chatId GROUP BY userName ORDER BY count DESC LIMIT 10")
+    fun getParticipantInfoLimit10(chatId: Long): LiveData<List<ParticipantInfo>>
+
     @Query("SELECT hour, COUNT(*) AS count FROM message_info WHERE chatId = :chatId GROUP BY hour")
     fun getTimeInfo(chatId: Long): LiveData<List<TimeInfo>>
+
+    @Query("SELECT userName, COUNT(*) AS count FROM message_info WHERE chatId = :chatId AND userName LIKE :query GROUP BY userName ORDER BY count DESC")
+    fun findParticipantInfo(chatId: Long, query: String): LiveData<List<ParticipantInfo>>
+
+    @Query("SELECT COUNT(*) FROM message_info WHERE chatId = :chatId")
+    fun getTotalCount(chatId: Long): LiveData<String>
 }

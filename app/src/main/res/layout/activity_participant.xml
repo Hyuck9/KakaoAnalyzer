@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <import type="me.hyuck.kakaoanalyzer.util.StringUtils"/>
+        <variable
+            name="viewModel"
+            type="me.hyuck.kakaoanalyzer.ui.statistics.participant.ParticipantViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.statistics.participant.ParticipantActivity">
+
+        <com.github.florent37.materialtextfield.MaterialTextField
+            android:id="@+id/materialTextField"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:mtf_image="@drawable/ic_search"
+            app:mtf_labelColor="#666">
+
+            <EditText
+                android:id="@+id/search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Search..."
+                android:textColor="#333"
+                android:textSize="15sp" />
+
+        </com.github.florent37.materialtextfield.MaterialTextField>
+
+        <TextView
+            android:id="@+id/participant_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:paddingTop="16dp"
+            android:paddingStart="16dp"
+            android:paddingBottom="16dp"
+            android:text="@{StringUtils.getFormattedNumber(viewModel.participantCount)}"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/textView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/materialTextField" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text=" 명"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:background="@color/colorAccent"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/participant_count"
+            app:layout_constraintEnd_toStartOf="@+id/text_sum_count"
+            app:layout_constraintTop_toBottomOf="@+id/materialTextField" />
+
+        <TextView
+            android:id="@+id/text_sum_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:padding="16dp"
+            android:text="@{StringUtils.getFormattedNumber(viewModel.totalCount)}"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/materialTextField" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvParticipantList"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/participant_count"
+            tools:listitem="@layout/participant_list_item" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

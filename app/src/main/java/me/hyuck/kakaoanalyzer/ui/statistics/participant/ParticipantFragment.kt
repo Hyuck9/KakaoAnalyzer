@@ -1,6 +1,7 @@
 package me.hyuck.kakaoanalyzer.ui.statistics.participant
 
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,6 +26,7 @@ import me.hyuck.kakaoanalyzer.model.ParticipantInfo
 import me.hyuck.kakaoanalyzer.ui.statistics.StatisticsActivity
 import me.hyuck.kakaoanalyzer.ui.statistics.common.PeiChartFragment
 import java.util.*
+import kotlin.properties.Delegates
 
 /**
  * A simple [Fragment] subclass.
@@ -34,6 +36,7 @@ class ParticipantFragment : PeiChartFragment() {
     private lateinit var viewModel: ParticipantViewModel
     private lateinit var binding: FragmentParticipantBinding
     private lateinit var adapter: ParticipantAdapter
+    private var chatId by Delegates.notNull<Long>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +46,8 @@ class ParticipantFragment : PeiChartFragment() {
 
         initChart(binding.participantPieChart)
         initRecyclerView()
-        // Inflate the layout for this fragment
+        initButton()
+
         return binding.root
     }
 
@@ -51,17 +55,23 @@ class ParticipantFragment : PeiChartFragment() {
         super.onActivityCreated(savedInstanceState)
 
         viewModel = ViewModelProviders.of(this).get(ParticipantViewModel::class.java)
-        val chatId: Long = (Objects.requireNonNull(activity) as StatisticsActivity).chatId
-        viewModel.setData(chatId)
+        chatId = (Objects.requireNonNull(activity) as StatisticsActivity).chatId
+        viewModel.set10Data(chatId)
         subscribeUi(viewModel.participantInfo)
     }
 
     private fun initRecyclerView() {
-        binding.rvParticipantList.setHasFixedSize(true)
-
         adapter = ParticipantAdapter()
         binding.rvParticipantList.adapter = adapter
         binding.rvParticipantList.addItemDecoration(DividerItemDecoration(requireContext(), 1))
+    }
+
+    private fun initButton() {
+        binding.btnMoreParticipant.setOnClickListener {
+            val intent = Intent(requireContext(), ParticipantActivity::class.java)
+            intent.putExtra(StatisticsActivity.EXTRA_CHAT_ID, chatId)
+            startActivity(intent)
+        }
     }
 
     private fun subscribeUi(liveData: LiveData<List<ParticipantInfo>>?) {
