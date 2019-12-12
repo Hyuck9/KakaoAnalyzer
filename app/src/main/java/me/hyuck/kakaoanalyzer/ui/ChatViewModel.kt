@@ -230,13 +230,14 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
     private fun parseContent(message: Message) {
         val userName: String = message.userName
         val content: String = message.msgContent
+        val dateTime = message.dateTime
         val words = content.split(" ").toTypedArray()
         for (word in words) {
             if (StringUtils.isPassedKeyword(word)) {
                 Log.d(TAG, "[KEYWORDS] [PASS] [$word]")
                 continue
             }
-            keywords.add(Keyword(0, userName, word))
+            keywords.add(Keyword(0, userName, word, dateTime))
         }
     }
 

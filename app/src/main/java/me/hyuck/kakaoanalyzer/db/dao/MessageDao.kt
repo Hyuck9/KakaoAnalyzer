@@ -17,30 +17,30 @@ interface MessageDao {
     @Query("DELETE FROM message_info WHERE chatId = :chatId")
     fun deleteAllMessagesFromChatId(chatId: Long)
 
-    @Query("SELECT COUNT(DISTINCT userName) FROM message_info WHERE chatId = :chatId")
-    fun getUserCount(chatId: Long): LiveData<Int>
+    @Query("SELECT COUNT(DISTINCT userName) FROM message_info WHERE chatId = :chatId AND dateTime BETWEEN :startDate AND :endDate")
+    fun getUserCount(chatId: Long, startDate: Date, endDate: Date): LiveData<Int>
 
-    @Query("SELECT COUNT(*) FROM message_info WHERE chatId = :chatId")
-    fun getMessageCount(chatId: Long): LiveData<Int>
+    @Query("SELECT COUNT(*) FROM message_info WHERE chatId = :chatId AND dateTime BETWEEN :startDate AND :endDate")
+    fun getMessageCount(chatId: Long, startDate: Date, endDate: Date): LiveData<Int>
 
-    @Query("SELECT MIN(dateTime) AS dateTime FROM message_info WHERE chatId = :chatId")
-    fun getStartDate(chatId: Long): Date
+//    @Query("SELECT MIN(dateTime) AS dateTime FROM message_info WHERE chatId = :chatId")
+//    fun getStartDate(chatId: Long): Date
+//
+//    @Query("SELECT MAX(dateTime) AS dateTime FROM message_info WHERE chatId = :chatId")
+//    fun getEndDate(chatId: Long): Date
 
-    @Query("SELECT MAX(dateTime) AS dateTime FROM message_info WHERE chatId = :chatId")
-    fun getEndDate(chatId: Long): Date
+    @Query("SELECT userName, COUNT(*) AS count FROM message_info WHERE chatId = :chatId AND dateTime BETWEEN :startDate AND :endDate GROUP BY userName ORDER BY count DESC")
+    fun getParticipantInfo(chatId: Long, startDate: Date, endDate: Date): LiveData<List<ParticipantInfo>>
 
-    @Query("SELECT userName, COUNT(*) AS count FROM message_info WHERE chatId = :chatId GROUP BY userName ORDER BY count DESC")
-    fun getParticipantInfo(chatId: Long): LiveData<List<ParticipantInfo>>
+    @Query("SELECT userName, COUNT(*) AS count FROM message_info WHERE chatId = :chatId AND dateTime BETWEEN :startDate AND :endDate GROUP BY userName ORDER BY count DESC LIMIT 10")
+    fun getParticipantInfoLimit10(chatId: Long, startDate: Date, endDate: Date): LiveData<List<ParticipantInfo>>
 
-    @Query("SELECT userName, COUNT(*) AS count FROM message_info WHERE chatId = :chatId GROUP BY userName ORDER BY count DESC LIMIT 10")
-    fun getParticipantInfoLimit10(chatId: Long): LiveData<List<ParticipantInfo>>
+    @Query("SELECT hour, COUNT(*) AS count FROM message_info WHERE chatId = :chatId AND dateTime BETWEEN :startDate AND :endDate GROUP BY hour")
+    fun getTimeInfo(chatId: Long, startDate: Date, endDate: Date): LiveData<List<TimeInfo>>
 
-    @Query("SELECT hour, COUNT(*) AS count FROM message_info WHERE chatId = :chatId GROUP BY hour")
-    fun getTimeInfo(chatId: Long): LiveData<List<TimeInfo>>
+    @Query("SELECT userName, COUNT(*) AS count FROM message_info WHERE chatId = :chatId AND dateTime BETWEEN :startDate AND :endDate AND userName LIKE :query GROUP BY userName ORDER BY count DESC")
+    fun findParticipantInfo(chatId: Long, startDate: Date, endDate: Date, query: String): LiveData<List<ParticipantInfo>>
 
-    @Query("SELECT userName, COUNT(*) AS count FROM message_info WHERE chatId = :chatId AND userName LIKE :query GROUP BY userName ORDER BY count DESC")
-    fun findParticipantInfo(chatId: Long, query: String): LiveData<List<ParticipantInfo>>
-
-    @Query("SELECT COUNT(*) FROM message_info WHERE chatId = :chatId")
-    fun getTotalCount(chatId: Long): LiveData<String>
+    @Query("SELECT COUNT(*) FROM message_info WHERE chatId = :chatId AND dateTime BETWEEN :startDate AND :endDate")
+    fun getTotalCount(chatId: Long, startDate: Date, endDate: Date): LiveData<String>
 }

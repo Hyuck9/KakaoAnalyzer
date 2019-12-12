@@ -14,6 +14,6 @@ class TimeViewModel(application: Application): AndroidViewModel(application) {
     var timeInfo: LiveData<List<TimeInfo>>? = null
 
     fun setData(chat: Chat) {
-        timeInfo = db!!.messageDao().getTimeInfo(chat.id)
+        timeInfo = db!!.messageDao().getTimeInfo(chat.id, chat.startDate, chat.endDate)
     }
 }

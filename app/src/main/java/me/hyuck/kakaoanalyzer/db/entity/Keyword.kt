@@ -5,6 +5,7 @@ import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity(
     tableName = "keyword_info",
@@ -16,6 +17,6 @@ import androidx.room.PrimaryKey
     )],
     indices = [Index(value = ["chatId"])]
 )
-data class Keyword(var chatId:Long, var userName:String, var keyword:String) {
+data class Keyword(var chatId:Long, var userName:String, var keyword:String, var dateTime:Date) {
     @PrimaryKey(autoGenerate = true) var id: Long = 0
 }

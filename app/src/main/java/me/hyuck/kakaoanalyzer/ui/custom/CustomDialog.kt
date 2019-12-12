@@ -46,7 +46,7 @@ class CustomDialog(context: Context, var chat: Chat) : AppCompatDialog(context) 
                 DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                     val date = "${year}-${String.format("%02d",month+1)}-${String.format("%02d",dayOfMonth)}"
                     startDate.text = date
-                    chat.startDate = DateUtils.convertStringFormatToDate(date, "yyyy-MM-dd")
+                    chat.startDate = DateUtils.convertStringFormatToDate("$date 00:00:00", "yyyy-MM-dd HH:mm:ss")
                 }, calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH]
             ).show()
         }
@@ -57,7 +57,7 @@ class CustomDialog(context: Context, var chat: Chat) : AppCompatDialog(context) 
                 DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                     val date = "${year}-${String.format("%02d",month+1)}-${String.format("%02d",dayOfMonth)}"
                     endDate.text = date
-                    chat.endDate = DateUtils.convertStringFormatToDate(date, "yyyy-MM-dd")
+                    chat.endDate = DateUtils.convertStringFormatToDate("$date 23:59:59", "yyyy-MM-dd HH:mm:ss")
                 }, calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH]
             ).show()
         }

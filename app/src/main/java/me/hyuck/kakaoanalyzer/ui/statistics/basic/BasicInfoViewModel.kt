@@ -22,9 +22,9 @@ class BasicInfoViewModel(application: Application): AndroidViewModel(application
 
     fun setData(chat: Chat) {
         viewModelScope.launch(Dispatchers.IO) {
-            userCount = db!!.messageDao().getUserCount(chat.id)
-            messageCount = db.messageDao().getMessageCount(chat.id)
-            keywordCount = db.keywordDao().getKeywordCount(chat.id)
+            userCount = db!!.messageDao().getUserCount(chat.id, chat.startDate, chat.endDate)
+            messageCount = db.messageDao().getMessageCount(chat.id, chat.startDate, chat.endDate)
+            keywordCount = db.keywordDao().getKeywordCount(chat.id, chat.startDate, chat.endDate)
             period = "${DateUtils.convertDateToStringFormat(chat.startDate, "yyyy-MM-dd")} ~ ${DateUtils.convertDateToStringFormat(chat.endDate, "yyyy-MM-dd")}"
         }
     }

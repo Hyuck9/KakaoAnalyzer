@@ -15,17 +15,17 @@ class KeywordViewModel(application: Application): AndroidViewModel(application) 
     var totalCount: LiveData<String>? = null
 
     fun set10Data(chat: Chat) {
-        keywordInfo = db!!.keywordDao().getKeywordInfoLimit10(chat.id)
+        keywordInfo = db!!.keywordDao().getKeywordInfoLimit10(chat.id, chat.startDate, chat.endDate)
     }
     fun getAllData(chat: Chat): LiveData<List<KeywordInfo>>? {
-        totalCount = db!!.keywordDao().getTotalCount(chat.id)
-        return db.keywordDao().getKeywordInfo(chat.id)
+        totalCount = db!!.keywordDao().getTotalCount(chat.id, chat.startDate, chat.endDate)
+        return db.keywordDao().getKeywordInfo(chat.id, chat.startDate, chat.endDate)
     }
 
     fun findData(chat: Chat, keyword: String?): LiveData<List<KeywordInfo>>? {
         return if (keyword == null || keyword.isEmpty())
-            db!!.keywordDao().getKeywordInfo(chat.id)
+            db!!.keywordDao().getKeywordInfo(chat.id, chat.startDate, chat.endDate)
         else
-            db!!.keywordDao().findKeywordInfo(chat.id, "%${keyword}%")
+            db!!.keywordDao().findKeywordInfo(chat.id, chat.startDate, chat.endDate, "%${keyword}%")
     }
 }

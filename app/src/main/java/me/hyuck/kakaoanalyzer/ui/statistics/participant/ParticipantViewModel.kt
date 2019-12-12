@@ -16,19 +16,19 @@ class ParticipantViewModel(application: Application): AndroidViewModel(applicati
     var participantCount: LiveData<Int>? = null
 
     fun set10Data(chat: Chat) {
-        participantInfo = db!!.messageDao().getParticipantInfoLimit10(chat.id)
+        participantInfo = db!!.messageDao().getParticipantInfoLimit10(chat.id, chat.startDate, chat.endDate)
     }
     fun getAllData(chat: Chat): LiveData<List<ParticipantInfo>>? {
-        totalCount = db!!.messageDao().getTotalCount(chat.id)
-        participantCount = db.messageDao().getUserCount(chat.id)
-        return db.messageDao().getParticipantInfo(chat.id)
+        totalCount = db!!.messageDao().getTotalCount(chat.id, chat.startDate, chat.endDate)
+        participantCount = db.messageDao().getUserCount(chat.id, chat.startDate, chat.endDate)
+        return db.messageDao().getParticipantInfo(chat.id, chat.startDate, chat.endDate)
     }
 
     fun findData(chat: Chat, user: String?): LiveData<List<ParticipantInfo>>? {
         return if (user == null || user.isEmpty())
-            db!!.messageDao().getParticipantInfo(chat.id)
+            db!!.messageDao().getParticipantInfo(chat.id, chat.startDate, chat.endDate)
         else
-            db!!.messageDao().findParticipantInfo(chat.id, "%${user}%")
+            db!!.messageDao().findParticipantInfo(chat.id, chat.startDate, chat.endDate, "%${user}%")
     }
 
 
