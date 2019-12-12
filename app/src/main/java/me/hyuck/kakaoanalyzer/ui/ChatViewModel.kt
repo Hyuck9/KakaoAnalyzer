@@ -8,6 +8,9 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import me.hyuck.kakaoanalyzer.db.AppDatabase
 import me.hyuck.kakaoanalyzer.db.entity.Chat
 import me.hyuck.kakaoanalyzer.db.entity.Keyword
@@ -51,9 +54,15 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
     }
 
     private fun insertChat(chat: Chat): Long {
-//        viewModelScope.launch(Dispatchers.IO) {
         return db!!.chatDao().insert(chat)
-//        }
+    }
+
+    fun deleteChat(chat: Chat) {
+        viewModelScope.launch(Dispatchers.IO) {
+            db!!.chatDao().delete(chat)
+            db.messageDao().deleteAllMessagesFromChatId(chat.id)
+            db.keywordDao().deleteAllKeywordsFromChatId(chat.id)
+        }
     }
 
     private fun insertMessages(messages: List<Message>) {

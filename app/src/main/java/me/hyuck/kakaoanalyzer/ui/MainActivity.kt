@@ -2,18 +2,22 @@ package me.hyuck.kakaoanalyzer.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import me.hyuck.kakaoanalyzer.R
 import me.hyuck.kakaoanalyzer.adapter.ChatListAdapter
 import me.hyuck.kakaoanalyzer.databinding.ActivityMainBinding
 import me.hyuck.kakaoanalyzer.db.entity.Chat
 import me.hyuck.kakaoanalyzer.ui.custom.CustomDialog
 import me.hyuck.kakaoanalyzer.ui.guide.GuideActivity
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -57,6 +61,28 @@ class MainActivity : AppCompatActivity() {
             }
         })
         binding.rvChatList.adapter = chatAdapter
+
+        ItemTouchHelper(object :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                chatAdapter.getChatAt(viewHolder.adapterPosition)?.let {
+                    if (deleteChatFile(it)) {
+                        viewModel.deleteChat(it)
+                        Toast.makeText(this@MainActivity, "삭제 성공", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this@MainActivity, "삭제 실패", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }).attachToRecyclerView(binding.rvChatList)
     }
 
     private fun subscribeUi(liveData: LiveData<List<Chat>>) {
@@ -69,6 +95,16 @@ class MainActivity : AppCompatActivity() {
                 binding.executePendingBindings()
             }
         )
+    }
+
+    private fun deleteChatFile(chat: Chat): Boolean {
+        val chatFileDir: File = File(chat.filePath).parentFile ?: return true
+        return if (chatFileDir.exists()) {
+            chatFileDir.listFiles()?.let { files -> files.forEach { it.delete() } }
+            chatFileDir.delete()
+        } else {
+            true
+        }
     }
 
     override fun onResume() {
