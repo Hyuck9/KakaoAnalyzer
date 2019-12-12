@@ -23,12 +23,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.lifecycleOwner = this
         setSupportActionBar(binding.toolbar)
 
         viewModel = ViewModelProviders.of(this).get(ChatViewModel::class.java)
+
+        binding.viewModel = viewModel
 
         binding.btnGoKakao.setOnClickListener {
             val intent = packageManager.getLaunchIntentForPackage("com.kakao.talk")
@@ -48,11 +49,6 @@ class MainActivity : AppCompatActivity() {
         binding.rvChatList.setHasFixedSize(true)
         chatAdapter = ChatListAdapter(object: ChatListAdapter.OnItemClickListener {
             override fun OnItemClick(chat: Chat?) {
-//                val intent = Intent(this@MainActivity, StatisticsActivity::class.java)
-//                intent.putExtra(StatisticsActivity.EXTRA_CHAT_ID, chat!!.id)
-//                intent.putExtra(StatisticsActivity.EXTRA_TITLE, chat.title)
-//                intent.putExtra(StatisticsActivity.EXTRA_CHAT, chat)
-//                startActivity(intent)
                 chat?.run {
                     val cloneChat = copy(title=title, date = date, size = size, filePath = filePath, startDate = startDate, endDate = endDate)
                     cloneChat.id = id
@@ -68,10 +64,7 @@ class MainActivity : AppCompatActivity() {
             this,
             Observer<List<Chat>> { chatEntities: List<Chat>? ->
                 if (chatEntities != null) {
-                    binding.isLoading = false
                     chatAdapter.setChatList(chatEntities)
-                } else {
-                    binding.isLoading = true
                 }
                 binding.executePendingBindings()
             }

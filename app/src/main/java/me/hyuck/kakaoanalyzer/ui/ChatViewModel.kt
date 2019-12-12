@@ -7,6 +7,7 @@ import android.os.Environment
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import me.hyuck.kakaoanalyzer.db.AppDatabase
 import me.hyuck.kakaoanalyzer.db.entity.Chat
 import me.hyuck.kakaoanalyzer.db.entity.Keyword
@@ -35,6 +36,11 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
     private lateinit var startDate: Date
     private lateinit var endDate: Date
 
+    var isComplete: MutableLiveData<Boolean>? = MutableLiveData()
+
+    init {
+        isComplete!!.postValue(true)
+    }
 
     fun getAllChats(): LiveData<List<Chat>> {
         return db!!.chatDao().getAllChats()
@@ -134,6 +140,7 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
      * KakaoTalkChats.txt 파일 파싱
      */
     private fun parseFile(file: File) {
+        isComplete!!.postValue(false)
         messages = mutableListOf()
         keywords = mutableListOf()
         val filePath = file.absolutePath
@@ -185,6 +192,7 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
         } catch (e: IOException) {
             e.printStackTrace()
         }
+        isComplete!!.postValue(true)
     }
 
     /**
