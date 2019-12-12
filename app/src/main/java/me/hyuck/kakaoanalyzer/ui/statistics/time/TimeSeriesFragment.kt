@@ -156,7 +156,7 @@ class TimeSeriesFragment : Fragment() {
     }
 
     private fun setMaxValue(m: Int) {
-        var maximum = m
+//        var maximum = m
         var yAxis: YAxis
         run {
             // // Y-Axis Style // //
@@ -166,11 +166,11 @@ class TimeSeriesFragment : Fragment() {
             // horizontal grid lines
             yAxis.enableGridDashedLine(10f, 10f, 0f)
             // axis range
-            val mod = maximum % 50
-            val addNum = 50 - mod
-            maximum += addNum
-            yAxis.axisMaximum = maximum.toFloat()
-            yAxis.axisMinimum = -10f
+//            val mod = maximum % 50
+//            val addNum = 50 - mod
+//            maximum += addNum
+            yAxis.axisMaximum = m * 1.1f
+            yAxis.axisMinimum = 0f
             yAxis.setDrawLimitLinesBehindData(true)
         }
     }
