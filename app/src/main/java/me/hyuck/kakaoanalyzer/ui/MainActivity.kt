@@ -12,8 +12,8 @@ import me.hyuck.kakaoanalyzer.R
 import me.hyuck.kakaoanalyzer.adapter.ChatListAdapter
 import me.hyuck.kakaoanalyzer.databinding.ActivityMainBinding
 import me.hyuck.kakaoanalyzer.db.entity.Chat
+import me.hyuck.kakaoanalyzer.ui.custom.CustomDialog
 import me.hyuck.kakaoanalyzer.ui.guide.GuideActivity
-import me.hyuck.kakaoanalyzer.ui.statistics.StatisticsActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -48,11 +48,12 @@ class MainActivity : AppCompatActivity() {
         binding.rvChatList.setHasFixedSize(true)
         chatAdapter = ChatListAdapter(object: ChatListAdapter.OnItemClickListener {
             override fun OnItemClick(chat: Chat?) {
-                val intent = Intent(this@MainActivity, StatisticsActivity::class.java)
-                intent.putExtra(StatisticsActivity.EXTRA_CHAT_ID, chat!!.id)
-                intent.putExtra(StatisticsActivity.EXTRA_TITLE, chat.title)
-                intent.putExtra(StatisticsActivity.EXTRA_CHAT, chat)
-                startActivity(intent)
+//                val intent = Intent(this@MainActivity, StatisticsActivity::class.java)
+//                intent.putExtra(StatisticsActivity.EXTRA_CHAT_ID, chat!!.id)
+//                intent.putExtra(StatisticsActivity.EXTRA_TITLE, chat.title)
+//                intent.putExtra(StatisticsActivity.EXTRA_CHAT, chat)
+//                startActivity(intent)
+                CustomDialog(this@MainActivity, chat!!).show()
             }
         })
         binding.rvChatList.adapter = chatAdapter
