@@ -22,6 +22,7 @@ import com.github.mikephil.charting.utils.MPPointF
 import me.hyuck.kakaoanalyzer.R
 import me.hyuck.kakaoanalyzer.adapter.ParticipantAdapter
 import me.hyuck.kakaoanalyzer.databinding.FragmentParticipantBinding
+import me.hyuck.kakaoanalyzer.db.entity.Chat
 import me.hyuck.kakaoanalyzer.model.ParticipantInfo
 import me.hyuck.kakaoanalyzer.ui.statistics.StatisticsActivity
 import me.hyuck.kakaoanalyzer.ui.statistics.common.PeiChartFragment
@@ -36,7 +37,7 @@ class ParticipantFragment : PeiChartFragment() {
     private lateinit var viewModel: ParticipantViewModel
     private lateinit var binding: FragmentParticipantBinding
     private lateinit var adapter: ParticipantAdapter
-    private var chatId by Delegates.notNull<Long>()
+    private lateinit var chat: Chat
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,8 +56,8 @@ class ParticipantFragment : PeiChartFragment() {
         super.onActivityCreated(savedInstanceState)
 
         viewModel = ViewModelProviders.of(this).get(ParticipantViewModel::class.java)
-        chatId = (Objects.requireNonNull(activity) as StatisticsActivity).chatId
-        viewModel.set10Data(chatId)
+        chat = (Objects.requireNonNull(activity) as StatisticsActivity).chat
+        viewModel.set10Data(chat)
         subscribeUi(viewModel.participantInfo)
     }
 
@@ -69,7 +70,7 @@ class ParticipantFragment : PeiChartFragment() {
     private fun initButton() {
         binding.btnMoreParticipant.setOnClickListener {
             val intent = Intent(requireContext(), ParticipantActivity::class.java)
-            intent.putExtra(StatisticsActivity.EXTRA_CHAT_ID, chatId)
+            intent.putExtra(StatisticsActivity.EXTRA_CHAT, chat)
             startActivity(intent)
         }
     }

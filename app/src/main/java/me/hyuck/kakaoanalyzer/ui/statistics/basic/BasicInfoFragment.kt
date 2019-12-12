@@ -34,8 +34,8 @@ class BasicInfoFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(requireActivity()).get(BasicInfoViewModel::class.java)
-        val chatId: Long = (Objects.requireNonNull(activity) as StatisticsActivity).chatId
-        viewModel.setData(chatId)
+        val chat = (Objects.requireNonNull(activity) as StatisticsActivity).chat
+        viewModel.setData(chat)
         binding.viewModel = viewModel
     }
 

@@ -50,8 +50,8 @@ class TimeSeriesFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         viewModel = ViewModelProviders.of(this).get(TimeViewModel::class.java)
-        val chatId: Long = (Objects.requireNonNull(activity) as StatisticsActivity).chatId
-        viewModel.setData(chatId)
+        val chat = (Objects.requireNonNull(activity) as StatisticsActivity).chat
+        viewModel.setData(chat)
         subscribeUi(viewModel.timeInfo)
     }
 

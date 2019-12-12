@@ -53,7 +53,11 @@ class MainActivity : AppCompatActivity() {
 //                intent.putExtra(StatisticsActivity.EXTRA_TITLE, chat.title)
 //                intent.putExtra(StatisticsActivity.EXTRA_CHAT, chat)
 //                startActivity(intent)
-                CustomDialog(this@MainActivity, chat!!).show()
+                chat?.run {
+                    val cloneChat = copy(title=title, date = date, size = size, filePath = filePath, startDate = startDate, endDate = endDate)
+                    cloneChat.id = id
+                    CustomDialog(this@MainActivity, cloneChat).show()
+                }
             }
         })
         binding.rvChatList.adapter = chatAdapter

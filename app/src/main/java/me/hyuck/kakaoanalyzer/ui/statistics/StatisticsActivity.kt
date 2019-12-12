@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.ViewModelProviders
 import me.hyuck.kakaoanalyzer.R
 import me.hyuck.kakaoanalyzer.databinding.ActivityStatisticsBinding
+import me.hyuck.kakaoanalyzer.db.entity.Chat
 import me.hyuck.kakaoanalyzer.ui.statistics.basic.BasicInfoFragment
 import me.hyuck.kakaoanalyzer.ui.statistics.basic.BasicInfoViewModel
 import me.hyuck.kakaoanalyzer.ui.statistics.keyword.KeywordFragment
@@ -19,16 +20,14 @@ import me.hyuck.kakaoanalyzer.ui.statistics.time.TimeSeriesFragment
 class StatisticsActivity : AppCompatActivity() {
 
     companion object {
-        const val EXTRA_CHAT_ID = "me.hyuck.kakaoanalyzer.ui.statistics.EXTRA_CHAT_ID"
         const val EXTRA_CHAT = "me.hyuck.kakaoanalyzer.ui.statistics.EXTRA_CHAT"
-        const val EXTRA_TITLE = "me.hyuck.kakaoanalyzer.ui.statistics.EXTRA_TITLE"
     }
 
     private lateinit var basicViewModel: BasicInfoViewModel
 
     private lateinit var binding: ActivityStatisticsBinding
 
-    var chatId: Long = 0
+    lateinit var chat: Chat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,10 +35,10 @@ class StatisticsActivity : AppCompatActivity() {
 
         basicViewModel = ViewModelProviders.of(this).get(BasicInfoViewModel::class.java)
 
-        binding.toolbarTitle.text = intent.getStringExtra(EXTRA_TITLE)
 
-        chatId = intent.getLongExtra(EXTRA_CHAT_ID, 0)
-        basicViewModel.setData(chatId)
+        chat = intent.getSerializableExtra(EXTRA_CHAT) as Chat
+        binding.toolbarTitle.text = chat.title
+        basicViewModel.setData(chat)
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.arrow_back)

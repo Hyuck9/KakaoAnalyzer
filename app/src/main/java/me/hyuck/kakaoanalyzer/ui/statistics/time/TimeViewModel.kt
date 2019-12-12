@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import me.hyuck.kakaoanalyzer.db.AppDatabase
+import me.hyuck.kakaoanalyzer.db.entity.Chat
 import me.hyuck.kakaoanalyzer.model.TimeInfo
 
 class TimeViewModel(application: Application): AndroidViewModel(application) {
@@ -12,7 +13,7 @@ class TimeViewModel(application: Application): AndroidViewModel(application) {
 
     var timeInfo: LiveData<List<TimeInfo>>? = null
 
-    fun setData(chatId: Long) {
-        timeInfo = db!!.messageDao().getTimeInfo(chatId)
+    fun setData(chat: Chat) {
+        timeInfo = db!!.messageDao().getTimeInfo(chat.id)
     }
 }

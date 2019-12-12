@@ -71,8 +71,6 @@ class CustomDialog(context: Context, var chat: Chat) : AppCompatDialog(context) 
         btPositive.setOnClickListener {
             dismiss()
                 val intent = Intent(context, StatisticsActivity::class.java)
-                intent.putExtra(StatisticsActivity.EXTRA_CHAT_ID, chat.id)
-                intent.putExtra(StatisticsActivity.EXTRA_TITLE, chat.title)
                 intent.putExtra(StatisticsActivity.EXTRA_CHAT, chat)
                 context.startActivity(intent)
         }

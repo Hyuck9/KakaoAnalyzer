@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import me.hyuck.kakaoanalyzer.R
 import me.hyuck.kakaoanalyzer.adapter.ParticipantAdapter
 import me.hyuck.kakaoanalyzer.databinding.ActivityParticipantBinding
+import me.hyuck.kakaoanalyzer.db.entity.Chat
 import me.hyuck.kakaoanalyzer.model.ParticipantInfo
 import me.hyuck.kakaoanalyzer.ui.statistics.StatisticsActivity
 
@@ -33,9 +34,9 @@ class ParticipantActivity : AppCompatActivity() {
         initRecyclerView()
 
         viewModel = ViewModelProviders.of(this).get(ParticipantViewModel::class.java)
-        val chatId = intent.getLongExtra(StatisticsActivity.EXTRA_CHAT_ID, 0)
+        val chat = intent.getSerializableExtra(StatisticsActivity.EXTRA_CHAT) as Chat
         binding.viewModel = viewModel
-        subscribeUi(viewModel.getAllData(chatId))
+        subscribeUi(viewModel.getAllData(chat))
 
         binding.search.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -45,7 +46,7 @@ class ParticipantActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                subscribeUi(viewModel.findData(chatId, s.toString()))
+                subscribeUi(viewModel.findData(chat, s.toString()))
             }
 
         })
