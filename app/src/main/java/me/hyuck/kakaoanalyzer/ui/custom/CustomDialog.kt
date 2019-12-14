@@ -40,26 +40,35 @@ class CustomDialog(context: Context, var chat: Chat) : AppCompatDialog(context) 
     }
 
     private fun initDatePicker() {
+        calendar.time = chat.startDate
+        val startDateDialog = DatePickerDialog(context,
+            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                val date = "${year}-${String.format("%02d",month+1)}-${String.format("%02d",dayOfMonth)}"
+                startDate.text = date
+                chat.startDate = DateUtils.convertStringFormatToDate("$date 00:00:00", "yyyy-MM-dd HH:mm:ss")
+            }, calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH]
+        )
+            calendar.time = chat.endDate
+        val endDateDialog = DatePickerDialog(context,
+            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                val date = "${year}-${String.format("%02d",month+1)}-${String.format("%02d",dayOfMonth)}"
+                endDate.text = date
+                chat.endDate = DateUtils.convertStringFormatToDate("$date 23:59:59", "yyyy-MM-dd HH:mm:ss")
+            }, calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH]
+        )
+
+        startDateDialog.datePicker.minDate = chat.startDate.time
+        startDateDialog.datePicker.maxDate = chat.endDate.time
+        endDateDialog.datePicker.minDate = chat.startDate.time
+        endDateDialog.datePicker.maxDate = chat.endDate.time
+
         startDate.setOnClickListener {
-            calendar.time = chat.startDate
-            DatePickerDialog(context,
-                DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                    val date = "${year}-${String.format("%02d",month+1)}-${String.format("%02d",dayOfMonth)}"
-                    startDate.text = date
-                    chat.startDate = DateUtils.convertStringFormatToDate("$date 00:00:00", "yyyy-MM-dd HH:mm:ss")
-                }, calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH]
-            ).show()
+            startDateDialog.datePicker.maxDate
+            startDateDialog.show()
         }
 
         endDate.setOnClickListener {
-            calendar.time = chat.endDate
-            DatePickerDialog(context,
-                DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                    val date = "${year}-${String.format("%02d",month+1)}-${String.format("%02d",dayOfMonth)}"
-                    endDate.text = date
-                    chat.endDate = DateUtils.convertStringFormatToDate("$date 23:59:59", "yyyy-MM-dd HH:mm:ss")
-                }, calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH]
-            ).show()
+            endDateDialog.show()
         }
     }
 
