@@ -24,6 +24,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:mtf_image="@drawable/ic_search"
+            app:mtf_openKeyboardOnFocus="true"
             app:mtf_labelColor="#666">
 
             <EditText
@@ -31,6 +32,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Search..."
+                android:singleLine="true"
+                android:imeOptions="actionSearch"
                 android:textColor="#333"
                 android:textSize="15sp" />
 

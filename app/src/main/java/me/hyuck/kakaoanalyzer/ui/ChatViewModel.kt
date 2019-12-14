@@ -222,7 +222,6 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
             Log.d(TAG, "[MESSAGE] [PASS] [$msg]")
             return
         }
-        // TODO: Message Parsing And Insert Message
         val firstSplitIndex = msg.indexOf(" : ")
         val dateAndName = msg.split(" : ").toTypedArray()[0]
 //        val dateTime: Date = DateUtils.convertStringToDate(dateAndName.split(", ").toTypedArray()[0])
@@ -235,10 +234,11 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
         messages.add(message)
         if (StringUtils.isPassedMessage(content)) {
             Log.d(TAG, "[MESSAGE] [PASS] [$content]")
-            return
+            passMessageInsertKeyword(message)
+        } else {
+            parseContent(message)
+            Log.d(TAG, message.toString())
         }
-        parseContent(message)
-        Log.d(TAG, message.toString())
     }
 
     /**
@@ -256,6 +256,13 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
             }
             keywords.add(Keyword(0, userName, word, dateTime))
         }
+    }
+
+    private fun passMessageInsertKeyword(message: Message) {
+        val userName: String = message.userName
+        val dateTime = message.dateTime
+        val word: String = StringUtils.replacePassedMessage(message.msgContent)
+        keywords.add(Keyword(0, userName, word, dateTime))
     }
 
 }
