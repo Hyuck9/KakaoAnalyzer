@@ -15,7 +15,7 @@ class KeywordViewModel(application: Application): AndroidViewModel(application) 
     var totalCount: LiveData<String>? = null
 
     fun set10Data(chat: Chat) {
-        keywordInfo = db!!.keywordDao().getKeywordInfoLimit10(chat.id, chat.startDate, chat.endDate)
+        keywordInfo = db!!.keywordDao().getKeywordInfoLimit(chat.id, chat.startDate, chat.endDate, 10)
     }
     fun getAllData(chat: Chat): LiveData<List<KeywordInfo>>? {
         totalCount = db!!.keywordDao().getTotalCount(chat.id, chat.startDate, chat.endDate)

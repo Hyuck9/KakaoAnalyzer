@@ -8,8 +8,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.hyuck.kakaoanalyzer.db.AppDatabase
 import me.hyuck.kakaoanalyzer.db.entity.Chat
+import me.hyuck.kakaoanalyzer.model.KeywordInfo
+import me.hyuck.kakaoanalyzer.model.ParticipantInfo
 import me.hyuck.kakaoanalyzer.util.DateUtils
-import java.util.*
 
 class BasicInfoViewModel(application: Application): AndroidViewModel(application) {
 
@@ -18,6 +19,9 @@ class BasicInfoViewModel(application: Application): AndroidViewModel(application
     var userCount: LiveData<Int>? = null
     var messageCount: LiveData<Int>? = null
     var keywordCount: LiveData<Int>? = null
+    var participantInfo: LiveData<List<ParticipantInfo>>? = null
+    var keywordInfo: LiveData<List<KeywordInfo>>? = null
+
     lateinit var period: String
 
     fun setData(chat: Chat) {
@@ -29,5 +33,12 @@ class BasicInfoViewModel(application: Application): AndroidViewModel(application
         }
     }
 
+    fun set5ParticipantData(chat: Chat) {
+        participantInfo = db!!.messageDao().getParticipantInfoLimit(chat.id, chat.startDate, chat.endDate, 5)
+    }
+
+    fun set5KeywordData(chat: Chat) {
+        keywordInfo = db!!.keywordDao().getKeywordInfoLimit(chat.id, chat.startDate, chat.endDate, 5)
+    }
 
 }

@@ -5,10 +5,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
+import android.util.Base64
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import me.hyuck.kakaoanalyzer.R
 import me.hyuck.kakaoanalyzer.util.PermissionUtils
+import java.security.MessageDigest
 
 class SplashActivity : AppCompatActivity() {
 
@@ -18,6 +21,8 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+//        getKeyHash()
 
         Handler().postDelayed({
             if (PermissionUtils.storagePermissionCheck(this@SplashActivity)) {
@@ -33,6 +38,19 @@ class SplashActivity : AppCompatActivity() {
                 )
             }
         }, 1000)
+    }
+    
+    private fun getKeyHash() {
+        try {
+            val info = packageManager.getPackageInfo("me.hyuck.kakaoanalyzer", PackageManager.GET_SIGNATURES)
+            for (signature in info.signatures) {
+                val md = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                Log.d("Key Hash","Key Hash : ${Base64.encodeToString(md.digest(),Base64.NO_WRAP)}" )
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun nextActivity() {

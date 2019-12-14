@@ -16,7 +16,7 @@ class ParticipantViewModel(application: Application): AndroidViewModel(applicati
     var participantCount: LiveData<Int>? = null
 
     fun set10Data(chat: Chat) {
-        participantInfo = db!!.messageDao().getParticipantInfoLimit10(chat.id, chat.startDate, chat.endDate)
+        participantInfo = db!!.messageDao().getParticipantInfoLimit(chat.id, chat.startDate, chat.endDate, 10)
     }
     fun getAllData(chat: Chat): LiveData<List<ParticipantInfo>>? {
         totalCount = db!!.messageDao().getTotalCount(chat.id, chat.startDate, chat.endDate)

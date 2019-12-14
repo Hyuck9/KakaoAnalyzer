@@ -22,8 +22,8 @@ interface KeywordDao {
     @Query("SELECT keyword, COUNT(*) AS count FROM keyword_info WHERE chatId = :chatId AND dateTime BETWEEN :startDate AND :endDate GROUP BY keyword ORDER BY count DESC")
     fun getKeywordInfo(chatId: Long, startDate: Date, endDate: Date): LiveData<List<KeywordInfo>>
 
-    @Query("SELECT keyword, COUNT(*) AS count FROM keyword_info WHERE chatId = :chatId AND dateTime BETWEEN :startDate AND :endDate GROUP BY keyword ORDER BY count DESC LIMIT 10")
-    fun getKeywordInfoLimit10(chatId: Long, startDate: Date, endDate: Date): LiveData<List<KeywordInfo>>
+    @Query("SELECT keyword, COUNT(*) AS count FROM keyword_info WHERE chatId = :chatId AND dateTime BETWEEN :startDate AND :endDate GROUP BY keyword ORDER BY count DESC LIMIT :limit")
+    fun getKeywordInfoLimit(chatId: Long, startDate: Date, endDate: Date, limit: Int): LiveData<List<KeywordInfo>>
 
     @Query("SELECT keyword, COUNT(*) AS count FROM keyword_info WHERE chatId = :chatId AND dateTime BETWEEN :startDate AND :endDate AND keyword LIKE :query GROUP BY keyword ORDER BY count DESC")
     fun findKeywordInfo(chatId: Long, startDate: Date, endDate: Date, query: String): LiveData<List<KeywordInfo>>
