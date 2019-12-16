@@ -13,7 +13,7 @@ import com.github.mikephil.charting.components.Legend
 /**
  * A simple [Fragment] subclass.
  */
-open class PeiChartFragment : Fragment() {
+open class PieChartFragment : Fragment() {
 
     fun initChart(chart: PieChart) {
         chart.setUsePercentValues(true)

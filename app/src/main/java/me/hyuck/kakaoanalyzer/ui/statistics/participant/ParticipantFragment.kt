@@ -25,14 +25,13 @@ import me.hyuck.kakaoanalyzer.databinding.FragmentParticipantBinding
 import me.hyuck.kakaoanalyzer.db.entity.Chat
 import me.hyuck.kakaoanalyzer.model.ParticipantInfo
 import me.hyuck.kakaoanalyzer.ui.statistics.StatisticsActivity
-import me.hyuck.kakaoanalyzer.ui.statistics.common.PeiChartFragment
+import me.hyuck.kakaoanalyzer.ui.statistics.common.PieChartFragment
 import java.util.*
-import kotlin.properties.Delegates
 
 /**
  * A simple [Fragment] subclass.
  */
-class ParticipantFragment : PeiChartFragment() {
+class ParticipantFragment : PieChartFragment() {
 
     private lateinit var viewModel: ParticipantViewModel
     private lateinit var binding: FragmentParticipantBinding

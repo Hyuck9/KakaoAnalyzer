@@ -25,13 +25,13 @@ import me.hyuck.kakaoanalyzer.databinding.FragmentKeywordBinding
 import me.hyuck.kakaoanalyzer.db.entity.Chat
 import me.hyuck.kakaoanalyzer.model.KeywordInfo
 import me.hyuck.kakaoanalyzer.ui.statistics.StatisticsActivity
-import me.hyuck.kakaoanalyzer.ui.statistics.common.PeiChartFragment
+import me.hyuck.kakaoanalyzer.ui.statistics.common.PieChartFragment
 import java.util.*
 
 /**
  * A simple [Fragment] subclass.
  */
-class KeywordFragment : PeiChartFragment() {
+class KeywordFragment : PieChartFragment() {
 
     private lateinit var viewModel: KeywordViewModel
     private lateinit var binding: FragmentKeywordBinding
