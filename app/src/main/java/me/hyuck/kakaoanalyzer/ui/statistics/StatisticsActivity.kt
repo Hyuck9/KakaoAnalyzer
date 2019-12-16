@@ -12,6 +12,8 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.kakao.kakaolink.v2.KakaoLinkResponse
 import com.kakao.kakaolink.v2.KakaoLinkService
 import com.kakao.message.template.LinkObject
@@ -72,7 +74,10 @@ class StatisticsActivity : AppCompatActivity() {
                 Toast.makeText( applicationContext, "Successfully sent KakaoLink v2 message.", Toast.LENGTH_LONG ).show()
             }
         }
+
+        initAdView()
     }
+
     private fun subscribe(liveData1: LiveData<List<ParticipantInfo>>?, liveData2: LiveData<List<KeywordInfo>>?) {
         liveData1!!.observe(
             this,
@@ -86,6 +91,12 @@ class StatisticsActivity : AppCompatActivity() {
                 keywordList = keywordInfos
             }
         )
+    }
+
+    private fun initAdView() {
+        MobileAds.initialize(this, getString(R.string.admob_app_id))
+        val adRequest = AdRequest.Builder().addTestDevice("2ADFCDA6721F3FBE51A8C53FA886ECA8").build()
+        binding.adView.loadAd(adRequest)
     }
 
     private fun setViewPager() {
