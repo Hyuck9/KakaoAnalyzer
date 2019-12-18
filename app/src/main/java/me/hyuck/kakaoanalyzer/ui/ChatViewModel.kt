@@ -1,8 +1,6 @@
 package me.hyuck.kakaoanalyzer.ui
 
-import android.annotation.SuppressLint
 import android.app.Application
-import android.os.AsyncTask
 import android.os.Environment
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -10,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import me.hyuck.kakaoanalyzer.db.AppDatabase
 import me.hyuck.kakaoanalyzer.db.entity.Chat
@@ -93,15 +92,7 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
      * 파일 파싱 및 DB 체크, Insert
      */
     fun parseChatInfo() {
-        FileAsyncTask().execute()
-    }
-
-    /**
-     * 파일 파싱 및 DB 체크, Insert (비동기 스레드)
-     */
-    @SuppressLint("StaticFieldLeak")
-    inner class FileAsyncTask : AsyncTask<Void?, Void?, Void?>() {
-        override fun doInBackground(vararg params: Void?): Void? {
+        GlobalScope.launch(Dispatchers.Default) {
             val saveFile: Array<File>? = getFileList()
             saveFile?.let {files ->
                 files.forEach {
@@ -109,7 +100,6 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
                     checkFileAndInsertLogic(file)
                 }
             }
-            return null
         }
     }
 
