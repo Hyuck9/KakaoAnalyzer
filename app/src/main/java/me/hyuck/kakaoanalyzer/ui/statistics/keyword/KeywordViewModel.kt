@@ -11,12 +11,12 @@ class KeywordViewModel(application: Application): AndroidViewModel(application) 
 
     private val db = AppDatabase.getInstance(application)
 
-    var keywordInfo: LiveData<List<KeywordInfo>>? = null
     var totalCount: LiveData<String>? = null
 
-    fun set10Data(chat: Chat) {
-        keywordInfo = db!!.keywordDao().getKeywordInfoLimit(chat.id, chat.startDate, chat.endDate, 10)
+    fun set10Data(chat: Chat): LiveData<List<KeywordInfo>> {
+        return db!!.keywordDao().getKeywordInfoLimit(chat.id, chat.startDate, chat.endDate, 10)
     }
+
     fun getAllData(chat: Chat): LiveData<List<KeywordInfo>>? {
         totalCount = db!!.keywordDao().getTotalCount(chat.id, chat.startDate, chat.endDate)
         return db.keywordDao().getKeywordInfo(chat.id, chat.startDate, chat.endDate)

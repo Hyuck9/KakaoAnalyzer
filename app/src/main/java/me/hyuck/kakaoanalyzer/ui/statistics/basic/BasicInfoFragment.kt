@@ -7,11 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import me.hyuck.kakaoanalyzer.R
 import me.hyuck.kakaoanalyzer.databinding.FragmentBasicInfoBinding
-import me.hyuck.kakaoanalyzer.ui.statistics.StatisticsActivity
-import java.util.*
+import me.hyuck.kakaoanalyzer.db.entity.Chat
 
 /**
  * A simple [Fragment] subclass.
@@ -34,10 +35,27 @@ class BasicInfoFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(requireActivity()).get(BasicInfoViewModel::class.java)
-        val chat = (Objects.requireNonNull(activity) as StatisticsActivity).chat
-        viewModel.setData(chat)
+
+        subscribeChat( viewModel.chat )
+
         binding.viewModel = viewModel
     }
 
+    private fun subscribeChat(chatData: LiveData<Chat>) {
+        chatData.observe(this, Observer {
+
+            viewModel.setPeriod(it)
+            viewModel.selectUserCount(it).observe(this, Observer { userCount ->
+                viewModel.userCount.value = userCount
+            })
+            viewModel.selectMessageCount(it).observe(this, Observer { messageCount ->
+                viewModel.messageCount.value = messageCount
+            })
+            viewModel.selectKeywordCount(it).observe(this, Observer { keywordCount ->
+                viewModel.keywordCount.value = keywordCount
+            })
+
+        })
+    }
 
 }

@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -25,6 +24,7 @@ import me.hyuck.kakaoanalyzer.databinding.FragmentKeywordBinding
 import me.hyuck.kakaoanalyzer.db.entity.Chat
 import me.hyuck.kakaoanalyzer.model.KeywordInfo
 import me.hyuck.kakaoanalyzer.ui.statistics.StatisticsActivity
+import me.hyuck.kakaoanalyzer.ui.statistics.basic.BasicInfoViewModel
 import me.hyuck.kakaoanalyzer.ui.statistics.common.PieChartFragment
 import java.util.*
 
@@ -34,6 +34,7 @@ import java.util.*
 class KeywordFragment : PieChartFragment() {
 
     private lateinit var viewModel: KeywordViewModel
+    private lateinit var basicViewModel: BasicInfoViewModel
     private lateinit var binding: FragmentKeywordBinding
     private lateinit var adapter: KeywordAdapter
     private lateinit var chat: Chat
@@ -56,9 +57,9 @@ class KeywordFragment : PieChartFragment() {
         super.onActivityCreated(savedInstanceState)
 
         viewModel = ViewModelProviders.of(this).get(KeywordViewModel::class.java)
+        basicViewModel = ViewModelProviders.of(requireActivity()).get(BasicInfoViewModel::class.java)
         chat = (Objects.requireNonNull(activity) as StatisticsActivity).chat
-        viewModel.set10Data(chat)
-        subscribeUi(viewModel.keywordInfo)
+        subscribeUi()
     }
 
     private fun initRecyclerView() {
@@ -75,17 +76,16 @@ class KeywordFragment : PieChartFragment() {
         }
     }
 
-    private fun subscribeUi(liveData: LiveData<List<KeywordInfo>>?) {
-        liveData!!.observe(
-            this,
-            Observer<List<KeywordInfo>> { keywordInfos: List<KeywordInfo>? ->
+    private fun subscribeUi() {
+        basicViewModel.chat.observe(this, Observer {
+            viewModel.set10Data(it).observe(this,  Observer { keywordInfos ->
                 if (keywordInfos != null) {
                     setData(keywordInfos)
                     adapter.setKeywordList(keywordInfos)
                 }
                 binding.executePendingBindings()
-            }
-        )
+            })
+        })
     }
 
     private fun setData(keywordInfos: List<KeywordInfo>) {

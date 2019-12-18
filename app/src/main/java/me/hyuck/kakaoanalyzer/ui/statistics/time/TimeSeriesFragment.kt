@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.github.mikephil.charting.components.Legend
@@ -23,7 +22,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import me.hyuck.kakaoanalyzer.R
 import me.hyuck.kakaoanalyzer.databinding.FragmentTimeseriesBinding
 import me.hyuck.kakaoanalyzer.model.TimeInfo
-import me.hyuck.kakaoanalyzer.ui.statistics.StatisticsActivity
+import me.hyuck.kakaoanalyzer.ui.statistics.basic.BasicInfoViewModel
 import java.util.*
 
 /**
@@ -32,6 +31,7 @@ import java.util.*
 class TimeSeriesFragment : Fragment() {
 
     private lateinit var viewModel: TimeViewModel
+    private lateinit var basicViewModel: BasicInfoViewModel
     private lateinit var binding: FragmentTimeseriesBinding
 
     override fun onCreateView(
@@ -50,19 +50,18 @@ class TimeSeriesFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         viewModel = ViewModelProviders.of(this).get(TimeViewModel::class.java)
-        val chat = (Objects.requireNonNull(activity) as StatisticsActivity).chat
-        viewModel.setData(chat)
-        subscribeUi(viewModel.timeInfo)
+        basicViewModel = ViewModelProviders.of(requireActivity()).get(BasicInfoViewModel::class.java)
+        subscribeUi()
     }
 
-    private fun subscribeUi(liveData: LiveData<List<TimeInfo>>?) {
-        liveData!!.observe(
-            this,
-            Observer<List<TimeInfo>> { timeInfos: List<TimeInfo>? ->
-                timeInfos?.let { setData(it) }
+    private fun subscribeUi() {
+        basicViewModel.chat.observe(this, Observer { chat ->
+            viewModel.setData(chat).observe(this,  Observer { timeList ->
+                setData(timeList)
                 binding.executePendingBindings()
-            }
-        )
+            })
+        })
+
     }
 
     private fun initChart() {
@@ -111,48 +110,40 @@ class TimeSeriesFragment : Fragment() {
         }
         setMaxValue(maximum)
         val dataSet: LineDataSet
-        if (
-            binding.timeSeriesChart.data != null &&
-            binding.timeSeriesChart.data.dataSetCount > 0
-        ) {
-            dataSet = binding.timeSeriesChart.data.getDataSetByIndex(0) as (LineDataSet)
-            dataSet.values = values
-            dataSet.notifyDataSetChanged()
-            binding.timeSeriesChart.data.notifyDataChanged()
-            binding.timeSeriesChart.notifyDataSetChanged()
-        } else { // create a dataset and give it a type
-            dataSet = LineDataSet(values, "채팅 시간대 분석")
-            dataSet.setDrawIcons(false)
-            // draw dashed line
-            dataSet.enableDashedLine(10f, 5f, 0f)
-            // black lines and points
-            dataSet.color = Color.BLACK
-            dataSet.setCircleColor(Color.BLACK)
-            // line thickness and point size
-            dataSet.lineWidth = 1f
-            dataSet.circleRadius = 3f
-            // draw points as solid circles
-            dataSet.setDrawCircleHole(false)
-            // customize legend entry
-            dataSet.formLineWidth = 1f
-            dataSet.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
-            dataSet.formSize = 15f
-            // text size of values
-            dataSet.valueTextSize = 9f
-            // draw selection line as dashed
-            dataSet.enableDashedHighlightLine(10f, 5f, 0f)
-            // set the filled area
-            dataSet.setDrawFilled(true)
-            dataSet.fillFormatter = IFillFormatter { _, _ -> binding.timeSeriesChart.axisLeft.axisMinimum }
-            val drawable= ContextCompat.getDrawable(requireContext(), R.drawable.fade_red)
-            dataSet.fillDrawable = drawable
-            val dataSets = ArrayList<ILineDataSet>()
-            dataSets.add(dataSet) // add the data sets
-            // create a data object with the data sets
-            val data = LineData(dataSets)
-            // set data
-            binding.timeSeriesChart.data = data
-        }
+        dataSet = LineDataSet(values, "채팅 시간대 분석")
+        dataSet.setDrawIcons(false)
+        // draw dashed line
+        dataSet.enableDashedLine(10f, 5f, 0f)
+        // black lines and points
+        dataSet.color = Color.BLACK
+        dataSet.setCircleColor(Color.BLACK)
+        // line thickness and point size
+        dataSet.lineWidth = 1f
+        dataSet.circleRadius = 3f
+        // draw points as solid circles
+        dataSet.setDrawCircleHole(false)
+        // customize legend entry
+        dataSet.formLineWidth = 1f
+        dataSet.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
+        dataSet.formSize = 15f
+        // text size of values
+        dataSet.valueTextSize = 9f
+        // draw selection line as dashed
+        dataSet.enableDashedHighlightLine(10f, 5f, 0f)
+        // set the filled area
+        dataSet.setDrawFilled(true)
+        dataSet.fillFormatter = IFillFormatter { _, _ -> binding.timeSeriesChart.axisLeft.axisMinimum }
+        val drawable= ContextCompat.getDrawable(requireContext(), R.drawable.fade_red)
+        dataSet.fillDrawable = drawable
+        val dataSets = ArrayList<ILineDataSet>()
+        dataSets.add(dataSet) // add the data sets
+        // create a data object with the data sets
+        val data = LineData(dataSets)
+        // set data
+        binding.timeSeriesChart.data = data
+        binding.timeSeriesChart.data.notifyDataChanged()
+        binding.timeSeriesChart.invalidate()
+        binding.timeSeriesChart.notifyDataSetChanged()
     }
 
     private fun setMaxValue(m: Int) {

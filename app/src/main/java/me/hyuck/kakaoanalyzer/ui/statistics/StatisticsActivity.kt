@@ -1,5 +1,6 @@
 package me.hyuck.kakaoanalyzer.ui.statistics
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,7 +10,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.ads.AdRequest
@@ -30,6 +30,8 @@ import me.hyuck.kakaoanalyzer.ui.statistics.basic.BasicInfoViewModel
 import me.hyuck.kakaoanalyzer.ui.statistics.keyword.KeywordFragment
 import me.hyuck.kakaoanalyzer.ui.statistics.participant.ParticipantFragment
 import me.hyuck.kakaoanalyzer.ui.statistics.time.TimeSeriesFragment
+import me.hyuck.kakaoanalyzer.util.DateUtils
+import java.util.*
 
 class StatisticsActivity : AppCompatActivity() {
 
@@ -47,23 +49,26 @@ class StatisticsActivity : AppCompatActivity() {
     private var participantList: List<ParticipantInfo>? = null
     private var keywordList: List<KeywordInfo>? = null
 
+    private val calendar = GregorianCalendar.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_statistics)
+        binding.lifecycleOwner = this
 
         basicViewModel = ViewModelProviders.of(this).get(BasicInfoViewModel::class.java)
 
         chat = intent.getSerializableExtra(EXTRA_CHAT) as Chat
         binding.toolbarTitle.text = chat.title
-        basicViewModel.set5ParticipantData(chat)
-        basicViewModel.set5KeywordData(chat)
-        basicViewModel.setData(chat)
-        subscribe(basicViewModel.participantInfo, basicViewModel.keywordInfo)
+        basicViewModel.chat.value = chat
+
+        subscribeChat()
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.arrow_back)
 
         setViewPager()
+        initDateButton()
 
         callback = object : ResponseCallback<KakaoLinkResponse>() {
             override fun onFailure(errorResult: ErrorResult) {
@@ -78,19 +83,52 @@ class StatisticsActivity : AppCompatActivity() {
         initAdView()
     }
 
-    private fun subscribe(liveData1: LiveData<List<ParticipantInfo>>?, liveData2: LiveData<List<KeywordInfo>>?) {
-        liveData1!!.observe(
-            this,
-            Observer<List<ParticipantInfo>> { participantInfos: List<ParticipantInfo>? ->
-                participantList = participantInfos
-            }
+    private fun subscribeChat() {
+        basicViewModel.chat.observe(this, Observer {
+            basicViewModel.set5ParticipantData(it).observe(this,  Observer {pList -> participantList = pList})
+            basicViewModel.set5KeywordData(it).observe(this,  Observer {kList -> keywordList = kList})
+        })
+    }
+
+
+    private fun initDateButton() {
+        binding.startDate.text = DateUtils.convertDateToStringFormat(chat.startDate, "yyyy-MM-dd")
+        binding.endDate.text = DateUtils.convertDateToStringFormat(chat.endDate, "yyyy-MM-dd")
+        initDatePicker()
+    }
+
+    private fun initDatePicker() {
+        calendar.time = chat.startDate
+        val startDateDialog = DatePickerDialog(this,
+            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                val date = "${year}-${String.format("%02d",month+1)}-${String.format("%02d",dayOfMonth)}"
+                binding.startDate.text = date
+                chat.startDate = DateUtils.convertStringFormatToDate("$date 00:00:00", "yyyy-MM-dd HH:mm:ss")
+                basicViewModel.chat.value = chat
+            }, calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH]
         )
-        liveData2!!.observe(
-            this,
-            Observer<List<KeywordInfo>> { keywordInfos: List<KeywordInfo>? ->
-                keywordList = keywordInfos
-            }
+        calendar.time = chat.endDate
+        val endDateDialog = DatePickerDialog(this,
+            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                val date = "${year}-${String.format("%02d",month+1)}-${String.format("%02d",dayOfMonth)}"
+                binding.endDate.text = date
+                chat.endDate = DateUtils.convertStringFormatToDate("$date 23:59:59", "yyyy-MM-dd HH:mm:ss")
+                basicViewModel.chat.value = chat
+            }, calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH]
         )
+
+        startDateDialog.datePicker.minDate = chat.startDate.time
+        startDateDialog.datePicker.maxDate = chat.endDate.time
+        endDateDialog.datePicker.minDate = chat.startDate.time
+        endDateDialog.datePicker.maxDate = chat.endDate.time
+
+        binding.startDate.setOnClickListener {
+            startDateDialog.show()
+        }
+
+        binding.endDate.setOnClickListener {
+            endDateDialog.show()
+        }
     }
 
     private fun initAdView() {
@@ -109,22 +147,20 @@ class StatisticsActivity : AppCompatActivity() {
         binding.tabs.setupWithViewPager(binding.viewPager)
     }
 
-    private class ViewPagerAdapter internal constructor(fm: FragmentManager) :
-        FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-
-        private val fragmentList = mutableListOf<Fragment>()
-        private val fragmentTitleList = mutableListOf<String>()
-
-        override fun getItem(position: Int): Fragment = fragmentList[position]
-
-        override fun getPageTitle(position: Int): CharSequence? = fragmentTitleList[position]
-
-        override fun getCount(): Int = fragmentList.size
-
-        fun addFragment(fragment: Fragment, title: String) {
-            fragmentList.add(fragment)
-            fragmentTitleList.add(title)
+    private fun share() {
+        var participant = ""
+        var keyword = ""
+        participantList?.forEachIndexed { index, pInfo ->
+            participant += "${index+1}. ${pInfo.userName} ${pInfo.count}회\n"
         }
+        keywordList?.forEachIndexed { index, kInfo ->
+            keyword += "${index+1}. ${kInfo.keyword} ${kInfo.count}회\n"
+        }
+
+        val params = TextTemplate
+            .newBuilder("${chat.title}\n${basicViewModel.period.value}\n\n<사용자>\n$participant\n<키워드>\n$keyword"
+                , LinkObject.newBuilder().build()).setButtonTitle("앱 열기").build()
+        KakaoLinkService.getInstance().sendDefault(this, params, null, callback)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -147,20 +183,22 @@ class StatisticsActivity : AppCompatActivity() {
     }
 
 
-    private fun share() {
-        var participant = ""
-        var keyword = ""
-        participantList?.forEachIndexed { index, pInfo ->
-            participant += "${index+1}. ${pInfo.userName} ${pInfo.count}회\n"
-        }
-        keywordList?.forEachIndexed { index, kInfo ->
-            keyword += "${index+1}. ${kInfo.keyword} ${kInfo.count}회\n"
-        }
+    private class ViewPagerAdapter internal constructor(fm: FragmentManager) :
+        FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-        val params = TextTemplate
-            .newBuilder("${chat.title}\n${basicViewModel.period}\n\n<사용자>\n$participant\n<키워드>\n$keyword"
-                , LinkObject.newBuilder().build()).setButtonTitle("앱 열기").build()
-        KakaoLinkService.getInstance().sendDefault(this, params, null, callback)
+        private val fragmentList = mutableListOf<Fragment>()
+        private val fragmentTitleList = mutableListOf<String>()
+
+        override fun getItem(position: Int): Fragment = fragmentList[position]
+
+        override fun getPageTitle(position: Int): CharSequence? = fragmentTitleList[position]
+
+        override fun getCount(): Int = fragmentList.size
+
+        fun addFragment(fragment: Fragment, title: String) {
+            fragmentList.add(fragment)
+            fragmentTitleList.add(title)
+        }
     }
 
 }
