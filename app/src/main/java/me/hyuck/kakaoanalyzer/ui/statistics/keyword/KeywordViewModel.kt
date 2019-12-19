@@ -13,9 +13,18 @@ class KeywordViewModel(application: Application): AndroidViewModel(application) 
     private val db = AppDatabase.getInstance(application)
 
     var totalCount: MutableLiveData<String> = MutableLiveData()
+    var userList: LiveData<List<String>>? = null
 
-    fun set10Data(chat: Chat): LiveData<List<KeywordInfo>> {
-        return db!!.keywordDao().getKeywordInfoLimit(chat.id, chat.startDate, chat.endDate, 10)
+    fun set10Data(chat: Chat, userName: String): LiveData<List<KeywordInfo>> {
+        return if ( userName == "전체" ) {
+            db!!.keywordDao().getKeywordInfoLimit(chat.id, chat.startDate, chat.endDate, 10)
+        } else {
+            db!!.keywordDao().getKeywordInfoUserLimit(chat.id, chat.startDate, chat.endDate, 10, userName)
+        }
+    }
+
+    fun setUserData(chat: Chat) {
+        userList = db!!.messageDao().getUserNames(chat.id)
     }
 
     fun getAllData(chat: Chat): LiveData<List<KeywordInfo>>? {

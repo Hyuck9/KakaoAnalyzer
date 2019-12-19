@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="userName"
+            type="String" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/userButton"
+            android:button="@null"
+            android:minWidth="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:background="@drawable/selector_radio_button"
+            android:textColor="@color/white"
+            android:layout_margin="4dp"
+            android:padding="8dp"
+            android:textAlignment="center"
+            android:text="@{userName}"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+</layout>

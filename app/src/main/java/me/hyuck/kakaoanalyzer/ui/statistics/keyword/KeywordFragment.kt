@@ -4,6 +4,7 @@ package me.hyuck.kakaoanalyzer.ui.statistics.keyword
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
 import me.hyuck.kakaoanalyzer.R
 import me.hyuck.kakaoanalyzer.adapter.KeywordAdapter
+import me.hyuck.kakaoanalyzer.adapter.UserButtonAdapter
 import me.hyuck.kakaoanalyzer.databinding.FragmentKeywordBinding
 import me.hyuck.kakaoanalyzer.db.entity.Chat
 import me.hyuck.kakaoanalyzer.model.KeywordInfo
@@ -37,6 +39,7 @@ class KeywordFragment : PieChartFragment() {
     private lateinit var basicViewModel: BasicInfoViewModel
     private lateinit var binding: FragmentKeywordBinding
     private lateinit var adapter: KeywordAdapter
+    private lateinit var userAdapter: UserButtonAdapter
     private lateinit var chat: Chat
 
     override fun onCreateView(
@@ -59,13 +62,25 @@ class KeywordFragment : PieChartFragment() {
         viewModel = ViewModelProviders.of(this).get(KeywordViewModel::class.java)
         basicViewModel = ViewModelProviders.of(requireActivity()).get(BasicInfoViewModel::class.java)
         chat = (Objects.requireNonNull(activity) as StatisticsActivity).chat
-        subscribeUi()
+
+
+        viewModel.setUserData(chat)
+        viewModel.userList!!.observe(this, Observer {
+            userAdapter.setUserList(it)
+        })
+        userAdapter.selectedUserName.observe(this, Observer {
+            Log.d("TEST", "selectedUserName : $it")
+            subscribeUi(it)
+        })
     }
 
     private fun initRecyclerView() {
         adapter = KeywordAdapter()
         binding.rvKeywordList.adapter = adapter
         binding.rvKeywordList.addItemDecoration(DividerItemDecoration(requireContext(), 1))
+
+        userAdapter = UserButtonAdapter()
+        binding.rvUserList.adapter = userAdapter
     }
 
     private fun initButton() {
@@ -76,9 +91,9 @@ class KeywordFragment : PieChartFragment() {
         }
     }
 
-    private fun subscribeUi() {
+    private fun subscribeUi(userName: String) {
         basicViewModel.chat.observe(this, Observer {
-            viewModel.set10Data(it).observe(this,  Observer { keywordInfos ->
+            viewModel.set10Data(it, userName).observe(this,  Observer { keywordInfos ->
                 if (keywordInfos != null) {
                     setData(keywordInfos)
                     adapter.setKeywordList(keywordInfos)
