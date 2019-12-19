@@ -4,6 +4,7 @@ package me.hyuck.kakaoanalyzer.ui.statistics.time
 import android.graphics.Color
 import android.graphics.DashPathEffect
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
@@ -20,8 +22,11 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IFillFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import me.hyuck.kakaoanalyzer.R
+import me.hyuck.kakaoanalyzer.adapter.KeywordAdapter
+import me.hyuck.kakaoanalyzer.adapter.UserButtonAdapter
 import me.hyuck.kakaoanalyzer.databinding.FragmentTimeseriesBinding
 import me.hyuck.kakaoanalyzer.model.TimeInfo
+import me.hyuck.kakaoanalyzer.ui.statistics.StatisticsActivity
 import me.hyuck.kakaoanalyzer.ui.statistics.basic.BasicInfoViewModel
 import java.util.*
 
@@ -32,6 +37,7 @@ class TimeSeriesFragment : Fragment() {
 
     private lateinit var viewModel: TimeViewModel
     private lateinit var basicViewModel: BasicInfoViewModel
+    private lateinit var userAdapter: UserButtonAdapter
     private lateinit var binding: FragmentTimeseriesBinding
 
     override fun onCreateView(
@@ -42,6 +48,7 @@ class TimeSeriesFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_timeseries, container, false)
 
         initChart()
+        initRecyclerView()
 
         return binding.root
     }
@@ -51,12 +58,25 @@ class TimeSeriesFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(TimeViewModel::class.java)
         basicViewModel = ViewModelProviders.of(requireActivity()).get(BasicInfoViewModel::class.java)
-        subscribeUi()
+        val chat = (Objects.requireNonNull(activity) as StatisticsActivity).chat
+
+        viewModel.setUserData(chat)
+        viewModel.userList!!.observe(this, Observer {
+            userAdapter.setUserList(it)
+        })
+        userAdapter.selectedUserName.observe(this, Observer {
+            subscribeUi(it)
+        })
     }
 
-    private fun subscribeUi() {
+    private fun initRecyclerView() {
+        userAdapter = UserButtonAdapter()
+        binding.rvUserList.adapter = userAdapter
+    }
+
+    private fun subscribeUi(userName: String) {
         basicViewModel.chat.observe(this, Observer { chat ->
-            viewModel.setData(chat).observe(this,  Observer { timeList ->
+            viewModel.setData(chat, userName).observe(this,  Observer { timeList ->
                 setData(timeList)
                 binding.executePendingBindings()
             })

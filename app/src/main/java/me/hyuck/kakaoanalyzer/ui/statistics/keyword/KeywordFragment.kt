@@ -69,7 +69,6 @@ class KeywordFragment : PieChartFragment() {
             userAdapter.setUserList(it)
         })
         userAdapter.selectedUserName.observe(this, Observer {
-            Log.d("TEST", "selectedUserName : $it")
             subscribeUi(it)
         })
     }

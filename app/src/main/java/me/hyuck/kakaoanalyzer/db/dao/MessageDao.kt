@@ -32,6 +32,9 @@ interface MessageDao {
     @Query("SELECT hour, COUNT(*) AS count FROM message_info WHERE chatId = :chatId AND dateTime BETWEEN :startDate AND :endDate GROUP BY hour")
     fun getTimeInfo(chatId: Long, startDate: Date, endDate: Date): LiveData<List<TimeInfo>>
 
+    @Query("SELECT hour, COUNT(*) AS count FROM message_info WHERE chatId = :chatId AND userName = :userName AND dateTime BETWEEN :startDate AND :endDate GROUP BY hour")
+    fun getTimeInfoUser(chatId: Long, startDate: Date, endDate: Date, userName: String): LiveData<List<TimeInfo>>
+
     @Query("SELECT userName, COUNT(*) AS count FROM message_info WHERE chatId = :chatId AND dateTime BETWEEN :startDate AND :endDate AND userName LIKE :query GROUP BY userName ORDER BY count DESC")
     fun findParticipantInfo(chatId: Long, startDate: Date, endDate: Date, query: String): LiveData<List<ParticipantInfo>>
 

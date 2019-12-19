@@ -10,8 +10,17 @@ import me.hyuck.kakaoanalyzer.model.TimeInfo
 class TimeViewModel(application: Application): AndroidViewModel(application) {
 
     private val db = AppDatabase.getInstance(application)
+    var userList: LiveData<List<String>>? = null
 
-    fun setData(chat: Chat): LiveData<List<TimeInfo>> {
-        return db!!.messageDao().getTimeInfo(chat.id, chat.startDate, chat.endDate)
+    fun setData(chat: Chat, userName: String): LiveData<List<TimeInfo>> {
+        return if ( userName == "전체" ) {
+            db!!.messageDao().getTimeInfo(chat.id, chat.startDate, chat.endDate)
+        } else {
+            db!!.messageDao().getTimeInfoUser(chat.id, chat.startDate, chat.endDate, userName)
+        }
+    }
+
+    fun setUserData(chat: Chat) {
+        userList = db!!.messageDao().getUserNames(chat.id)
     }
 }
