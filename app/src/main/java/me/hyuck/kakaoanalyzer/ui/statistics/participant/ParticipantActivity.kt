@@ -81,6 +81,8 @@ class ParticipantActivity : AppCompatActivity() {
             this,
             Observer<List<ParticipantInfo>> { participantInfoList: List<ParticipantInfo>? ->
                 if (participantInfoList != null) {
+                    viewModel.participantCount.value = participantInfoList.size
+                    viewModel.totalCount.value = participantInfoList.sumBy { it.count }.toString()
                     adapter.setParticipantList(participantInfoList)
                 }
                 binding.executePendingBindings()

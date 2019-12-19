@@ -82,6 +82,7 @@ class KeywordActivity : AppCompatActivity() {
             this,
             Observer<List<KeywordInfo>> { keywordInfoList: List<KeywordInfo>? ->
                 if (keywordInfoList != null) {
+                    viewModel.totalCount.value = keywordInfoList.sumBy { it.count }.toString()
                     adapter.setKeywordList(keywordInfoList)
                 }
                 binding.executePendingBindings()
