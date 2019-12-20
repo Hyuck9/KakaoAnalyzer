@@ -54,9 +54,9 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0-rc03"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-rc03"
-    implementation 'androidx.room:room-runtime:2.2.2'
-    kapt 'androidx.room:room-compiler:2.2.2'
-    implementation 'androidx.room:room-ktx:2.2.2'
+    implementation 'androidx.room:room-runtime:2.2.3'
+    kapt 'androidx.room:room-compiler:2.2.3'
+    implementation 'androidx.room:room-ktx:2.2.3'
 
     /* Debug Room Database */
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'

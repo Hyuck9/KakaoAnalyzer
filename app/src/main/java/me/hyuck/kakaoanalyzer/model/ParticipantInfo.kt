@@ -1,3 +1,5 @@
 package me.hyuck.kakaoanalyzer.model
 
-data class ParticipantInfo(var userName: String, var count: Int)
+import java.util.*
+
+data class ParticipantInfo(var userName: String, var count: Int, var firstDate: Date, var lastDate: Date)

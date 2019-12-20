@@ -42,6 +42,25 @@ object DateUtils {
         return format.format(date)
     }
 
+    @JvmStatic
+    fun convertDateToStringFormat(date: Date): String {
+        @SuppressLint("SimpleDateFormat")
+        val format = SimpleDateFormat("yyyy-MM-dd HH:mm")
+        return format.format(date)
+    }
+
+    @JvmStatic
+    fun calcMinusDay(date: Date): String {
+        val today = Calendar.getInstance()
+        val dDay = Calendar.getInstance()
+        dDay.time = date
+
+        val nToDay = today.timeInMillis / (24 * 60 * 60 * 1000)
+        val nDDay = dDay.timeInMillis / (24 * 60 * 60 * 1000)
+        val substract = nToDay - nDDay
+        return StringUtils.getFormattedNumber(substract.toInt())
+    }
+
     fun convertStringToDate(sDate: String): Date {
         @SuppressLint("SimpleDateFormat")
         val dateParser: DateFormat = SimpleDateFormat("yyyy년 MM월 dd일 a hh:mm")

@@ -133,7 +133,7 @@ class StatisticsActivity : AppCompatActivity() {
 
     private fun initAdView() {
         MobileAds.initialize(this, getString(R.string.admob_app_id))
-        val adRequest = AdRequest.Builder().addTestDevice("2ADFCDA6721F3FBE51A8C53FA886ECA8").build()
+        val adRequest = AdRequest.Builder().addTestDevice("F80CD049DDCCD3D36E5E1C4FD8E8F6A0").build()
         binding.adView.loadAd(adRequest)
     }
 
