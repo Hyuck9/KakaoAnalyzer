@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="me.hyuck.kakaoanalyzer.ui.statistics.basic.BasicInfoViewModel" />
+    </data>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,6 +44,19 @@
                 android:textStyle="bold"
                 android:layout_margin="16dp"
                 android:text="@string/more"
+                app:visibleGone="@{!viewModel.oneToOneAnalytics}"
+                />
+
+            <Button
+                android:id="@+id/one_on_one_analytics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/raised_button_ok"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_margin="16dp"
+                android:text="1:1 분석"
+                app:visibleGone="@{viewModel.oneToOneAnalytics}"
                 />
 
         </LinearLayout>

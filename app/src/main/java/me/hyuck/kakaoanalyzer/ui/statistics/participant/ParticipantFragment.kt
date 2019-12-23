@@ -4,6 +4,7 @@ package me.hyuck.kakaoanalyzer.ui.statistics.participant
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,6 +45,7 @@ class ParticipantFragment : PieChartFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_participant, container, false)
+        binding.lifecycleOwner = this
 
         initChart(binding.participantPieChart)
         initRecyclerView()
@@ -57,6 +59,7 @@ class ParticipantFragment : PieChartFragment() {
 
         viewModel = ViewModelProviders.of(this).get(ParticipantViewModel::class.java)
         basicViewModel = ViewModelProviders.of(requireActivity()).get(BasicInfoViewModel::class.java)
+        binding.viewModel = basicViewModel
         chat = (Objects.requireNonNull(activity) as StatisticsActivity).chat
         subscribeUi()
     }
@@ -81,6 +84,11 @@ class ParticipantFragment : PieChartFragment() {
                 setData(pInfoList)
                 adapter.setParticipantList(pInfoList)
                 binding.executePendingBindings()
+            })
+            basicViewModel.selectUserCount(it).observe(this, Observer { userCount ->
+                basicViewModel.userCount.value = userCount
+                basicViewModel.oneToOneAnalytics.postValue( userCount <= 2 )
+                Log.d("TEST", "oneToOneAnalytics : ${basicViewModel.oneToOneAnalytics.value}")
             })
         })
 

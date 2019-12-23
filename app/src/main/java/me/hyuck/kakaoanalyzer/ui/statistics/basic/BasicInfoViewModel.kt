@@ -14,11 +14,12 @@ class BasicInfoViewModel(application: Application): AndroidViewModel(application
 
     private val db = AppDatabase.getInstance(application)
 
-    var userCount: MutableLiveData<Int> = MutableLiveData()
-    var messageCount: MutableLiveData<Int> = MutableLiveData()
-    var keywordCount: MutableLiveData<Int> = MutableLiveData()
-    var chat: MutableLiveData<Chat> = MutableLiveData()
+    var userCount = MutableLiveData<Int>()
+    var messageCount = MutableLiveData<Int>()
+    var keywordCount = MutableLiveData<Int>()
+    var chat = MutableLiveData<Chat>()
     var period = MutableLiveData<String>()
+    var oneToOneAnalytics = MutableLiveData<Boolean>()
 
     fun selectUserCount(chat: Chat): LiveData<Int> {
         return db!!.messageDao().getUserCount(chat.id, chat.startDate, chat.endDate)
