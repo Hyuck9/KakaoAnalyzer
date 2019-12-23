@@ -79,15 +79,21 @@ class ParticipantFragment : PieChartFragment() {
     }
 
     private fun subscribeUi() {
-        basicViewModel.chat.observe(this, Observer {
-            viewModel.set10Data(it).observe(this,  Observer { pInfoList ->
+        basicViewModel.chat.observe(this, Observer { chat ->
+            viewModel.set10Data(chat).observe(this,  Observer { pInfoList ->
                 setData(pInfoList)
                 adapter.setParticipantList(pInfoList)
                 binding.executePendingBindings()
             })
-            basicViewModel.selectUserCount(it).observe(this, Observer { userCount ->
+            basicViewModel.selectUserCount(chat).observe(this, Observer { userCount ->
                 basicViewModel.userCount.value = userCount
-                basicViewModel.oneToOneAnalytics.postValue( userCount <= 2 )
+                basicViewModel.oneToOneAnalytics.postValue( userCount == 2 )
+                if ( userCount == 2 ) {
+                    viewModel.setMessageData(chat).observe(this, Observer {
+                        viewModel.setOneToOneAnalytics(it)
+                        viewModel.test()
+                    })
+                }
                 Log.d("TEST", "oneToOneAnalytics : ${basicViewModel.oneToOneAnalytics.value}")
             })
         })

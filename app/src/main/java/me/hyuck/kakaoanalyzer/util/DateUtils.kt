@@ -51,14 +51,30 @@ object DateUtils {
 
     @JvmStatic
     fun calcMinusDay(date: Date): String {
-        val today = Calendar.getInstance()
-        val dDay = Calendar.getInstance()
-        dDay.time = date
+        val subtract = calcTime(date, Date()) / 24 / 60 / 60
+        return StringUtils.getFormattedNumber(subtract.toInt())
+    }
 
-        val nToDay = today.timeInMillis / (24 * 60 * 60 * 1000)
-        val nDDay = dDay.timeInMillis / (24 * 60 * 60 * 1000)
-        val substract = nToDay - nDDay
-        return StringUtils.getFormattedNumber(substract.toInt())
+    fun isDiff1Hour(preDate: Date, postDate: Date): Boolean {
+        val subtract = calcTime(preDate, postDate) / 60
+        return subtract > 60
+    }
+
+    fun calcReplyTime(subtract: Double): String {
+        val minute = ( subtract / 60 ).toLong()
+        val second = (subtract % 60 ).toLong()
+        return "${minute}분 ${second}초"
+    }
+
+    fun calcTime(preDate: Date, postDate: Date): Long {
+        val preTime = Calendar.getInstance()
+        val postTime = Calendar.getInstance()
+        preTime.time = preDate
+        postTime.time = postDate
+
+        val preHour = preTime.timeInMillis / 1000
+        val postHour = postTime.timeInMillis / 1000
+        return postHour - preHour
     }
 
     fun convertStringToDate(sDate: String): Date {
