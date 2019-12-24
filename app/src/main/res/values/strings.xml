@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">KakaoAnalyzer</string>
+    <string name="app_name">카카오 분석기</string>
     <string name="loading_chat_list">loading...</string>
 
     <!-- TODO: Remove or change this placeholder text -->
