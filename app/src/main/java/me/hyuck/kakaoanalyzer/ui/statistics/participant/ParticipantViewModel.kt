@@ -11,6 +11,7 @@ import me.hyuck.kakaoanalyzer.model.OneOnOneAnalyticsInfo
 import me.hyuck.kakaoanalyzer.model.ParticipantInfo
 import me.hyuck.kakaoanalyzer.model.ReplyInfo
 import me.hyuck.kakaoanalyzer.util.DateUtils
+import me.hyuck.kakaoanalyzer.util.StringUtils
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -39,7 +40,7 @@ class ParticipantViewModel(application: Application): AndroidViewModel(applicati
             db!!.messageDao().findParticipantInfo(chat.id, chat.startDate, chat.endDate, "%${user}%")
     }
 
-    fun setMessageData(chat: Chat): LiveData<List<Message>> {
+    fun selectMessageData(chat: Chat): LiveData<List<Message>> {
         return db!!.messageDao().getMessage(chat.id, chat.startDate, chat.endDate)
     }
 
@@ -68,7 +69,7 @@ class ParticipantViewModel(application: Application): AndroidViewModel(applicati
         }
     }
 
-    fun getOneOnOneAnalyticsInfo(): OneOnOneAnalyticsInfo {
+    fun getOneOnOneAnalyticsInfo(messageList: List<Message>): OneOnOneAnalyticsInfo {
         val title = allReplies.filter { it.userName != "회원님" }.distinctBy { it.userName }[0].userName
         val oneOnOneAnalyticsInfo = OneOnOneAnalyticsInfo(title)
 
@@ -80,15 +81,19 @@ class ParticipantViewModel(application: Application): AndroidViewModel(applicati
         val someFirstReplies: List<Long> = firstReplies.filter{it.userName != "회원님"}.map{ it.replyTime }
         val allAverageList: List<Long> = allReplies.map{ it.replyTime }
         val allFirstList: List<Long> = firstReplies.map{ it.replyTime }
+        val userMessage = messageList.filter { it.userName == "회원님" }
+        val someMessage = messageList.filter { it.userName != "회원님" }
 
         oneOnOneAnalyticsInfo.userFirstCount = "${userFirstList.size}회 (${(userFirstList.size.toFloat() / firstMessages.size * 100 * 100).roundToInt() /100.0}%)"      // 회원님 선톡 횟수
         oneOnOneAnalyticsInfo.someoneUserFirstCount = "${someFirstList.size}회(${(someFirstList.size.toFloat()/firstMessages.size * 100 * 100).roundToInt() / 100.0}%)" // 상대방 선톡 횟수
-        oneOnOneAnalyticsInfo.userFirstReply = DateUtils.calcReplyTime(userFirstReplies.average())          // 회원님 선톡 답장 시간
-        oneOnOneAnalyticsInfo.someoneUserFirstReply = DateUtils.calcReplyTime(someFirstReplies.average())   // 상대방 선톡 답장 시간
-        oneOnOneAnalyticsInfo.userAverageReply = DateUtils.calcReplyTime(userAverageList.average())         // 회원님 평균 답장 시간
-        oneOnOneAnalyticsInfo.someoneUserAverageReply = DateUtils.calcReplyTime(someAverageList.average())  // 상대방 평균 답장 시간
-        oneOnOneAnalyticsInfo.allFirstReply = DateUtils.calcReplyTime(allFirstList.average())               // 대화방 전체 평균 선톡 답장 시간
-        oneOnOneAnalyticsInfo.allAverageReply = DateUtils.calcReplyTime(allAverageList.average())           // 대화방 전체 평균 답장 시간
+        oneOnOneAnalyticsInfo.userFirstReply = DateUtils.calcReplyTime(userFirstReplies.average())              // 회원님 선톡 답장 시간
+        oneOnOneAnalyticsInfo.someoneUserFirstReply = DateUtils.calcReplyTime(someFirstReplies.average())       // 상대방 선톡 답장 시간
+        oneOnOneAnalyticsInfo.userAverageReply = DateUtils.calcReplyTime(userAverageList.average())             // 회원님 평균 답장 시간
+        oneOnOneAnalyticsInfo.someoneUserAverageReply = DateUtils.calcReplyTime(someAverageList.average())      // 상대방 평균 답장 시간
+        oneOnOneAnalyticsInfo.allFirstReply = DateUtils.calcReplyTime(allFirstList.average())                   // 대화방 전체 평균 선톡 답장 시간
+        oneOnOneAnalyticsInfo.allAverageReply = DateUtils.calcReplyTime(allAverageList.average())               // 대화방 전체 평균 답장 시간
+        oneOnOneAnalyticsInfo.userMessage = StringUtils.getFormattedNumber(userMessage.size.toString())         // 회원님 보낸 메시지
+        oneOnOneAnalyticsInfo.someoneUserMessage = StringUtils.getFormattedNumber(someMessage.size.toString())  // 상대방 보낸 메시지
         return oneOnOneAnalyticsInfo
     }
 

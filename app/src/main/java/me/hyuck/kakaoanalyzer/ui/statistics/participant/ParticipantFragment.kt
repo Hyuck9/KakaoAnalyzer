@@ -80,7 +80,7 @@ class ParticipantFragment : PieChartFragment() {
             startActivity(intent)
         }
         binding.oneOnOneAnalytics.setOnClickListener {
-            OneOnOneDialog(requireContext(), oneOnOneAnalyticsInfo).show()
+            OneOnOneDialog(requireContext(), oneOnOneAnalyticsInfo, chat.title, (Objects.requireNonNull(activity) as StatisticsActivity).callback).show()
         }
     }
 
@@ -92,12 +92,12 @@ class ParticipantFragment : PieChartFragment() {
                 binding.executePendingBindings()
             })
             basicViewModel.selectUserCountIgnoreUser(chat).observe(this, Observer { userCount ->
-                basicViewModel.userCount.value = userCount
+                basicViewModel.userCount.value = if ( userCount == 0) 0 else userCount + 1
                 basicViewModel.oneOnOneAnalytics.value = (userCount == 1)
                 if ( userCount == 1 ) {
-                    viewModel.setMessageData(chat).observe(this, Observer {
+                    viewModel.selectMessageData(chat).observe(this, Observer {
                         viewModel.setOneOnOneAnalytics(it)
-                        oneOnOneAnalyticsInfo = viewModel.getOneOnOneAnalyticsInfo()
+                        oneOnOneAnalyticsInfo = viewModel.getOneOnOneAnalyticsInfo(it)
                     })
                 }
                 Log.d("TEST", "oneOnOneAnalytics : ${basicViewModel.oneOnOneAnalytics.value}")

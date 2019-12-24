@@ -9,4 +9,6 @@ data class OneOnOneAnalyticsInfo(var title: String) {
     var userAverageReply = ""
     var allFirstReply = ""
     var allAverageReply = ""
+    var userMessage = ""
+    var someoneUserMessage = ""
 }

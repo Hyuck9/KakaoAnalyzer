@@ -22,7 +22,7 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        getKeyHash()
+        getKeyHash()
 
         Handler().postDelayed({
             if (PermissionUtils.storagePermissionCheck(this@SplashActivity)) {

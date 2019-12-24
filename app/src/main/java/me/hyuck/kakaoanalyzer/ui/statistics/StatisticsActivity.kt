@@ -39,7 +39,7 @@ class StatisticsActivity : AppCompatActivity() {
         const val EXTRA_CHAT = "me.hyuck.kakaoanalyzer.ui.statistics.EXTRA_CHAT"
     }
 
-    private var callback: ResponseCallback<KakaoLinkResponse>? = null
+    var callback: ResponseCallback<KakaoLinkResponse>? = null
 
     private lateinit var basicViewModel: BasicInfoViewModel
 
@@ -76,7 +76,7 @@ class StatisticsActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(result: KakaoLinkResponse?) {
-                Toast.makeText( applicationContext, "Successfully sent KakaoLink v2 message.", Toast.LENGTH_LONG ).show()
+                Toast.makeText( applicationContext, "카카오톡 공유 성공", Toast.LENGTH_LONG ).show()
             }
         }
 
