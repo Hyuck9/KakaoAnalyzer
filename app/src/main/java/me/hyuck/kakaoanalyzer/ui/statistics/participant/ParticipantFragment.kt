@@ -23,7 +23,9 @@ import me.hyuck.kakaoanalyzer.R
 import me.hyuck.kakaoanalyzer.adapter.ParticipantAdapter
 import me.hyuck.kakaoanalyzer.databinding.FragmentParticipantBinding
 import me.hyuck.kakaoanalyzer.db.entity.Chat
+import me.hyuck.kakaoanalyzer.model.OneOnOneAnalyticsInfo
 import me.hyuck.kakaoanalyzer.model.ParticipantInfo
+import me.hyuck.kakaoanalyzer.ui.custom.OneOnOneDialog
 import me.hyuck.kakaoanalyzer.ui.statistics.StatisticsActivity
 import me.hyuck.kakaoanalyzer.ui.statistics.basic.BasicInfoViewModel
 import me.hyuck.kakaoanalyzer.ui.statistics.common.PieChartFragment
@@ -39,6 +41,7 @@ class ParticipantFragment : PieChartFragment() {
     private lateinit var binding: FragmentParticipantBinding
     private lateinit var adapter: ParticipantAdapter
     private lateinit var chat: Chat
+    private lateinit var oneOnOneAnalyticsInfo: OneOnOneAnalyticsInfo
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,6 +79,9 @@ class ParticipantFragment : PieChartFragment() {
             intent.putExtra(StatisticsActivity.EXTRA_CHAT, chat)
             startActivity(intent)
         }
+        binding.oneOnOneAnalytics.setOnClickListener {
+            OneOnOneDialog(requireContext(), oneOnOneAnalyticsInfo).show()
+        }
     }
 
     private fun subscribeUi() {
@@ -85,16 +91,16 @@ class ParticipantFragment : PieChartFragment() {
                 adapter.setParticipantList(pInfoList)
                 binding.executePendingBindings()
             })
-            basicViewModel.selectUserCount(chat).observe(this, Observer { userCount ->
+            basicViewModel.selectUserCountIgnoreUser(chat).observe(this, Observer { userCount ->
                 basicViewModel.userCount.value = userCount
-                basicViewModel.oneToOneAnalytics.postValue( userCount == 2 )
-                if ( userCount == 2 ) {
+                basicViewModel.oneOnOneAnalytics.value = (userCount == 1)
+                if ( userCount == 1 ) {
                     viewModel.setMessageData(chat).observe(this, Observer {
-                        viewModel.setOneToOneAnalytics(it)
-                        viewModel.test()
+                        viewModel.setOneOnOneAnalytics(it)
+                        oneOnOneAnalyticsInfo = viewModel.getOneOnOneAnalyticsInfo()
                     })
                 }
-                Log.d("TEST", "oneToOneAnalytics : ${basicViewModel.oneToOneAnalytics.value}")
+                Log.d("TEST", "oneOnOneAnalytics : ${basicViewModel.oneOnOneAnalytics.value}")
             })
         })
 

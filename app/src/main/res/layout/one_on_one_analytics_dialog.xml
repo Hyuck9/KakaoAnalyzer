@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    android:paddingBottom="32dp"
+    android:elevation="8dp"
+    >
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:text="1:1 대화 분석"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/button_share"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/title"
+        app:layout_constraintEnd_toEndOf="@+id/title"
+        app:layout_constraintTop_toTopOf="@+id/title"
+        app:srcCompat="@drawable/ic_share" />
+
+    <TextView
+        android:id="@+id/someone_user"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="상대방"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/user"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <TextView
+        android:id="@+id/user"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:text="회원님"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/someone_user"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:alpha="0.3"
+        android:background="@drawable/fade_horizontal_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/someone_user" />
+
+    <TextView
+        android:id="@+id/someone_user_first_count"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:text="372회 (73.81%)"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/user_first_count"
+        app:layout_constraintEnd_toStartOf="@+id/first_count"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line1" />
+
+    <TextView
+        android:id="@+id/user_first_count"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:text="132회 (26.19%)"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/first_count"
+        app:layout_constraintTop_toBottomOf="@+id/line1" />
+
+    <TextView
+        android:id="@+id/first_count"
+        android:layout_width="59dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:text="선톡 횟수"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/someone_user_first_count"
+        app:layout_constraintEnd_toStartOf="@+id/user_first_count"
+        app:layout_constraintStart_toEndOf="@+id/someone_user_first_count"
+        app:layout_constraintTop_toBottomOf="@+id/line1" />
+
+    <View
+        android:id="@+id/line2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:alpha="0.3"
+        android:background="@drawable/fade_horizontal_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/first_count" />
+
+    <TextView
+        android:id="@+id/someone_user_first_reply"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:text="21분 25초"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/first_reply"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line2" />
+
+    <TextView
+        android:id="@+id/first_reply"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:text="평균 선톡 답장시간"
+        android:textSize="10sp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/someone_user_first_reply"
+        app:layout_constraintEnd_toStartOf="@+id/user_first_reply"
+        app:layout_constraintStart_toEndOf="@+id/someone_user_first_reply"
+        app:layout_constraintTop_toBottomOf="@+id/line2" />
+
+    <TextView
+        android:id="@+id/user_first_reply"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:text="9분 30초"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/first_reply"
+        app:layout_constraintTop_toBottomOf="@+id/line2" />
+
+    <View
+        android:id="@+id/line3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:alpha="0.3"
+        android:background="@drawable/fade_horizontal_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/first_reply" />
+
+    <TextView
+        android:id="@+id/someone_user_average_reply"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:text="7분 10초"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/average_reply"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line3" />
+
+    <TextView
+        android:id="@+id/average_reply"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="평균 답장시간"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/someone_user_average_reply"
+        app:layout_constraintEnd_toStartOf="@+id/user_average_reply"
+        app:layout_constraintStart_toEndOf="@+id/someone_user_average_reply"
+        app:layout_constraintTop_toBottomOf="@+id/line3" />
+
+    <TextView
+        android:id="@+id/user_average_reply"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:text="5분 18초"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/average_reply"
+        app:layout_constraintTop_toBottomOf="@+id/line3" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="대화방 전체 평균 \n선톡 답장시간"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/line4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/someone_user_average_reply" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:text="대화방 전체 평균\n답장시간"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/line4"
+        app:layout_constraintTop_toBottomOf="@+id/user_average_reply" />
+
+    <View
+        android:id="@+id/line4"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:alpha="0.3"
+        android:background="@drawable/fade_vertical_gray"
+        app:layout_constraintBottom_toBottomOf="@+id/all_first_reply"
+        app:layout_constraintEnd_toStartOf="@+id/textView20"
+        app:layout_constraintStart_toEndOf="@+id/textView19"
+        app:layout_constraintTop_toBottomOf="@+id/average_reply" />
+
+    <TextView
+        android:id="@+id/all_first_reply"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:text="6분 55초"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:paddingBottom="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/all_average_reply"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+    <TextView
+        android:id="@+id/all_average_reply"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:paddingBottom="16dp"
+        android:text="12분 31초"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/all_first_reply"
+        app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+    <TextView
+        android:id="@+id/explain"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="@string/one_on_one_explain"
+        android:textColor="#B53F51B5"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/all_first_reply" />
+
+    <Button
+        android:id="@+id/btOk"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/raised_button_cancel"
+        android:text="확인"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/explain" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

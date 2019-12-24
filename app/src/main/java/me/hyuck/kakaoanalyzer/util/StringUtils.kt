@@ -29,7 +29,7 @@ object StringUtils {
     private const val MUSIC_FILE =
         "^\\w{64}(.mp3|.wav|.flac|.tta|.tak|.aac|.wma|.ogg|.m4a)"
 
-    private const val IN_OUT_USER = "(.+?님이\\s.+?님을\\s초대했습니다.|.+?님이\\s나갔습니다.|.+?님이\\s들어왔습니다.*)"
+    private const val IN_OUT_USER = "(.+?님이\\s.+?님을\\s초대했습니다.|.+?님이\\s나갔습니다.|.+?님을\\s내보냈습니다.|.+?님이\\s들어왔습니다.*)"
 
 
     fun parseMemory(byteNumber: Long): String {

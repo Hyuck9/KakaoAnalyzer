@@ -19,10 +19,14 @@ class BasicInfoViewModel(application: Application): AndroidViewModel(application
     var keywordCount = MutableLiveData<Int>()
     var chat = MutableLiveData<Chat>()
     var period = MutableLiveData<String>()
-    var oneToOneAnalytics = MutableLiveData<Boolean>()
+    var oneOnOneAnalytics = MutableLiveData<Boolean>()
 
     fun selectUserCount(chat: Chat): LiveData<Int> {
         return db!!.messageDao().getUserCount(chat.id, chat.startDate, chat.endDate)
+    }
+
+    fun selectUserCountIgnoreUser(chat: Chat): LiveData<Int> {
+        return db!!.messageDao().getUserCountIgnoreUser(chat.id, chat.startDate, chat.endDate)
     }
 
     fun selectMessageCount(chat: Chat): LiveData<Int> {

@@ -20,6 +20,9 @@ interface MessageDao {
     @Query("SELECT COUNT(DISTINCT userName) FROM message_info WHERE chatId = :chatId AND dateTime BETWEEN :startDate AND :endDate")
     fun getUserCount(chatId: Long, startDate: Date, endDate: Date): LiveData<Int>
 
+    @Query("SELECT COUNT(DISTINCT userName) FROM message_info WHERE chatId = :chatId AND dateTime BETWEEN :startDate AND :endDate AND userName != '회원님'")
+    fun getUserCountIgnoreUser(chatId: Long, startDate: Date, endDate: Date): LiveData<Int>
+
     @Query("SELECT COUNT(*) FROM message_info WHERE chatId = :chatId AND dateTime BETWEEN :startDate AND :endDate")
     fun getMessageCount(chatId: Long, startDate: Date, endDate: Date): LiveData<Int>
 
