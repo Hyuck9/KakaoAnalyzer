@@ -11,6 +11,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.MobileAds
 import me.hyuck.kakaoanalyzer.R
 import me.hyuck.kakaoanalyzer.adapter.ChatListAdapter
 import me.hyuck.kakaoanalyzer.databinding.ActivityMainBinding
@@ -24,12 +27,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: ChatViewModel
     private lateinit var chatAdapter: ChatListAdapter
+    private lateinit var mInterstitialAd: InterstitialAd
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
         setSupportActionBar(binding.toolbar)
+
+        MobileAds.initialize(this, getString(R.string.admob_app_id))
+        mInterstitialAd = InterstitialAd(this)
+        mInterstitialAd.adUnitId = getString(R.string.front_ad_unit_id)
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
 
         viewModel = ViewModelProviders.of(this).get(ChatViewModel::class.java)
 
@@ -113,4 +122,10 @@ class MainActivity : AppCompatActivity() {
             viewModel.parseChatInfo()
         }
     }
+
+    override fun onDestroy() {
+        if ( mInterstitialAd.isLoaded ) mInterstitialAd.show()
+        super.onDestroy()
+    }
+
 }

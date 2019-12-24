@@ -128,16 +128,6 @@
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- TODO: 데이터 없음 화면 추가해야함-->
-        <!--<TextView
-            android:id="@+id/loading_tv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical|center_horizontal"
-            android:text="@string/loading_chat_list"
-            android:textAlignment="center"
-            app:visibleGone="@{isLoading}"/>-->
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_chat_list"
             android:layout_width="match_parent"
@@ -148,12 +138,13 @@
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <!-- 추후 PC버전 텍스트파일 가져오기 등 기능에서 fab 사용 예정 -->
+        <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_add" />
+            android:src="@drawable/ic_add" />-->
 
         <ProgressBar
             android:id="@+id/loading_progress"

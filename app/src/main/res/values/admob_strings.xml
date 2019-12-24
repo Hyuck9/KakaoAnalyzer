@@ -5,4 +5,6 @@
     <string name="banner_ad_unit_id_test">ca-app-pub-3581307060625507/7315464574</string>
     <string name="native_ad_unit_id">ca-app-pub-3581307060625507/5149779319</string>
     <string name="native_ad_unit_id_test">ca-app-pub-3581307060625507/5149779319</string>
+    <string name="front_ad_unit_id">ca-app-pub-3581307060625507/4194810355</string>
+    <string name="front_ad_unit_id_test">ca-app-pub-3581307060625507/4194810355</string>
 </resources>
