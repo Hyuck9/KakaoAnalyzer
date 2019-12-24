@@ -50,7 +50,7 @@ open class PieChartFragment : Fragment() {
 
 
     private fun generateCenterSpannableText(): SpannableString? {
-        val s = SpannableString("TOP 10")
+        val s = SpannableString("분석 결과")
         s.setSpan(StyleSpan(Typeface.BOLD), 0, s.length, 0)
         return s
     }
