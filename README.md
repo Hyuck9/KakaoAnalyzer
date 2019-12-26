@@ -7,11 +7,11 @@
 Screenshots
 -----------
 <div>
-<image width="170" src="https://user-images.githubusercontent.com/33654522/71452154-3cc7f780-27c5-11ea-8c06-d9649da0dfbf.jpg">
-<image width="170" src="https://user-images.githubusercontent.com/33654522/71452180-b829a900-27c5-11ea-95ea-db9f22b3244d.jpg">
-<image width="170" src="https://user-images.githubusercontent.com/33654522/71452187-bfe94d80-27c5-11ea-8c37-eeec1cd72a4d.jpg">
-<image width="170" src="https://user-images.githubusercontent.com/33654522/71452189-c677c500-27c5-11ea-876e-768c67bcde8d.jpg">
-<image width="170" src="https://user-images.githubusercontent.com/33654522/71452196-d394b400-27c5-11ea-829d-989549f1546c.jpg">
+<image width="220" src="https://user-images.githubusercontent.com/33654522/71452154-3cc7f780-27c5-11ea-8c06-d9649da0dfbf.jpg">
+<image width="220" src="https://user-images.githubusercontent.com/33654522/71452180-b829a900-27c5-11ea-95ea-db9f22b3244d.jpg">
+<image width="220" src="https://user-images.githubusercontent.com/33654522/71452187-bfe94d80-27c5-11ea-8c37-eeec1cd72a4d.jpg">
+<image width="220" src="https://user-images.githubusercontent.com/33654522/71452189-c677c500-27c5-11ea-876e-768c67bcde8d.jpg">
+<image width="220" src="https://user-images.githubusercontent.com/33654522/71452196-d394b400-27c5-11ea-829d-989549f1546c.jpg">
 </div>
 
 Using Jetpack Architecture Components
