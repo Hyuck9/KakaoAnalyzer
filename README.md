@@ -22,10 +22,10 @@ Using Jetpack Architecture Components
 
 Libraries used on the project
 ---------------------------
-[1. MP Android Chart](https://github.com/PhilJay/MPAndroidChart)  
-[2. Debug Room Database](https://github.com/amitshekhariitbhu/Android-Debug-Database)  
-[3. 카카오링크](https://developers.kakao.com/docs/android/kakaotalk-link)  
-[4. MaterialTextField](https://github.com/florent37/MaterialTextField)  
+1. [MP Android Chart](https://github.com/PhilJay/MPAndroidChart)  
+2. [Debug Room Database](https://github.com/amitshekhariitbhu/Android-Debug-Database)  
+3. [카카오링크](https://developers.kakao.com/docs/android/kakaotalk-link)  
+4. [MaterialTextField](https://github.com/florent37/MaterialTextField)  
 
 Developed By
 ------------
