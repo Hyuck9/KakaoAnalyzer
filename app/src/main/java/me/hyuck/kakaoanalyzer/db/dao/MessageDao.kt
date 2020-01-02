@@ -47,6 +47,6 @@ interface MessageDao {
     @Query("SELECT COUNT(*) FROM message_info WHERE chatId = :chatId AND dateTime BETWEEN :startDate AND :endDate")
     fun getTotalCount(chatId: Long, startDate: Date, endDate: Date): LiveData<String>
 
-    @Query("SELECT userName FROM message_info WHERE chatId = :chatId GROUP BY userName ORDER BY userName")
+    @Query("SELECT userName FROM message_info WHERE chatId = :chatId GROUP BY userName ORDER BY COUNT(userName) DESC")
     fun getUserNames(chatId: Long): LiveData<List<String>>
 }
