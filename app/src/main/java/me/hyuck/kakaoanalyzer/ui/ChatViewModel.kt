@@ -199,6 +199,7 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
      */
     private fun insertData(chat: Chat) {
         val chatId = insertChat(chat)
+        Thread.sleep(1000)
         insertMessages(messages.map { it.copy(chatId = chatId) })
         insertKeywords(keywords.map { it.copy(chatId = chatId) })
     }

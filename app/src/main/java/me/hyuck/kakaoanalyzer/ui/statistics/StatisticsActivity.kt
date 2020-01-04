@@ -2,6 +2,7 @@ package me.hyuck.kakaoanalyzer.ui.statistics
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -25,6 +26,7 @@ import me.hyuck.kakaoanalyzer.databinding.ActivityStatisticsBinding
 import me.hyuck.kakaoanalyzer.db.entity.Chat
 import me.hyuck.kakaoanalyzer.model.KeywordInfo
 import me.hyuck.kakaoanalyzer.model.ParticipantInfo
+import me.hyuck.kakaoanalyzer.ui.ChatViewModel
 import me.hyuck.kakaoanalyzer.ui.statistics.basic.BasicInfoFragment
 import me.hyuck.kakaoanalyzer.ui.statistics.basic.BasicInfoViewModel
 import me.hyuck.kakaoanalyzer.ui.statistics.keyword.KeywordFragment
@@ -38,6 +40,8 @@ class StatisticsActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_CHAT = "me.hyuck.kakaoanalyzer.ui.statistics.EXTRA_CHAT"
     }
+    @Suppress("PrivatePropertyName")
+    private val TAG:String? = ChatViewModel::class.simpleName
 
     var callback: ResponseCallback<KakaoLinkResponse>? = null
 
@@ -76,7 +80,7 @@ class StatisticsActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(result: KakaoLinkResponse?) {
-                Toast.makeText( applicationContext, "카카오톡 공유 성공", Toast.LENGTH_LONG ).show()
+                Log.d( TAG, "카카오톡 공유 성공")
             }
         }
 
