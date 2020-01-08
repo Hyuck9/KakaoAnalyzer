@@ -24,4 +24,7 @@ interface ChatDao {
 
     @Query("SELECT filePath FROM chat_info")
     fun getFilePaths(): List<String>
+
+    @Query("SELECT isComplete FROM chat_info WHERE id = :chatId")
+    fun getComplete(chatId: Long): Boolean?
 }

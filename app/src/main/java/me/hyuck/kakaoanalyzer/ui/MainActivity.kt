@@ -20,7 +20,7 @@ import me.hyuck.kakaoanalyzer.databinding.ActivityMainBinding
 import me.hyuck.kakaoanalyzer.db.entity.Chat
 import me.hyuck.kakaoanalyzer.ui.custom.CustomDialog
 import me.hyuck.kakaoanalyzer.ui.guide.GuideActivity
-import java.io.File
+import me.hyuck.kakaoanalyzer.util.FileUtils
 
 class MainActivity : AppCompatActivity() {
 
@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                 chat?.run {
                     val cloneChat = copy(title=title, date = date, size = size, filePath = filePath, startDate = startDate, endDate = endDate)
                     cloneChat.id = id
-                    CustomDialog(this@MainActivity, cloneChat).show()
+                    CustomDialog(this@MainActivity, cloneChat, viewModel).show()
                 }
             }
         })
@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 chatAdapter.getChatAt(viewHolder.adapterPosition)?.let {
-                    if (deleteChatFile(it)) {
+                    if (FileUtils.deleteChatFile(it)) {
                         viewModel.deleteChat(it)
                         Toast.makeText(this@MainActivity, "삭제 성공", Toast.LENGTH_SHORT).show()
                     } else {
@@ -106,15 +106,6 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private fun deleteChatFile(chat: Chat): Boolean {
-        val chatFileDir: File = File(chat.filePath).parentFile ?: return true
-        return if (chatFileDir.exists()) {
-            chatFileDir.listFiles()?.let { files -> files.forEach { it.delete() } }
-            chatFileDir.delete()
-        } else {
-            true
-        }
-    }
 
     override fun onResume() {
         super.onResume()

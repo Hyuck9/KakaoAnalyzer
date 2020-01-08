@@ -48,6 +48,10 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
         return db!!.chatDao().getAllChats()
     }
 
+    fun getParseComplete(chatId: Long): Boolean? {
+        return db!!.chatDao().getComplete(chatId)
+    }
+
     private fun getFilePaths(): List<String> {
         return db!!.chatDao().getFilePaths()
     }
@@ -64,12 +68,21 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
+    private fun deleteMessagesAndKeywords(chatId: Long) {
+        db!!.messageDao().deleteAllMessagesFromChatId(chatId)
+        db.keywordDao().deleteAllKeywordsFromChatId(chatId)
+    }
+
     private fun insertMessages(messages: List<Message>) {
         db!!.messageDao().insert(messages)
     }
 
     private fun insertKeywords(keywords: List<Keyword>) {
         db!!.keywordDao().insert(keywords)
+    }
+
+    private fun updateChat(chat: Chat) {
+        db!!.chatDao().update(chat)
     }
 
     /**
@@ -97,7 +110,12 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
             saveFile?.let {files ->
                 files.forEach {
                     val file = File(it.absolutePath + File.separator + txtFileName)
-                    checkFileAndInsertLogic(file)
+                    if ( checkFile(file) ) {
+                        Log.d(TAG, "[2] [DB에 해당 데이터 이미 있음] [PASS]")
+                    } else {
+                        Log.d(TAG, "[2] [DB에 해당 데이터 없음] [insertChat]")
+                        addTextFile(file)
+                    }
                 }
             }
         }
@@ -107,19 +125,14 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
     /**
      * 파일 유무 체크 및 DB에 해당 데이터 있는지 체크
      */
-    private fun checkFileAndInsertLogic(file: File) {
+    private fun checkFile(file: File): Boolean {
+        var isExist = false
         if ( isFileExists(file) ) {
-            var isExist = false
             for (filePath in Objects.requireNonNull(getFilePaths())) {
                 if (filePath == file.absolutePath) isExist = true
             }
-            if (!isExist) {
-                Log.d(TAG, "[2] [DB에 해당 데이터 없음] [insertChat]")
-                parseFile(file)
-            } else {
-                Log.d(TAG, "[2] [DB에 해당 데이터 이미 있음] [PASS]")
-            }
         }
+        return isExist
     }
 
     /**
@@ -135,13 +148,8 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
-    /**
-     * KakaoTalkChats.txt 파일 파싱
-     */
-    private fun parseFile(file: File) {
+    private fun addTextFile(file: File) {
         isComplete!!.postValue(false)
-        messages = mutableListOf()
-        keywords = mutableListOf()
         val filePath = file.absolutePath
         try {
             BufferedReader(FileReader(file)).use { br ->
@@ -151,6 +159,64 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
                 br.readLine()
                 startDate = DateUtils.convertStringToDate(br.readLine())
                 val size: String = StringUtils.parseMemory(file.length())
+                var message: StringBuilder? = null
+                var read: String?
+                while (br.readLine().also { read = it } != null) {
+                    if (StringUtils.isFirstDateTimeMessage(read!!)) {
+                        message = StringBuilder(read!!)
+                    } else {
+                        if (StringUtils.isNotDateTimeMessage(read!!)) {
+                            message?.append(" ")?.append(read)
+                        }
+                    }
+                }
+
+                if (message != null) {
+                    readEndDate(message.toString().trim())
+                    insertChat(Chat(title, date, size, filePath, startDate, endDate))
+                }
+
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        isComplete!!.postValue(true)
+    }
+
+    private fun readEndDate(msg: String) {
+        val dateAndName = msg.split(" : ").toTypedArray()[0]
+        endDate = DateUtils.convertStringToDate(dateAndName.split(", ").toTypedArray()[0])
+    }
+
+
+
+
+
+
+
+
+
+    fun test(chat: Chat) {
+        GlobalScope.launch(Dispatchers.Default) {
+            parseFile(chat)
+        }
+    }
+
+
+    /**
+     * KakaoTalkChats.txt 파일 파싱
+     */
+    fun parseFile(chat: Chat) {
+        messages = mutableListOf()
+        keywords = mutableListOf()
+        val file = File(chat.filePath)
+        try {
+            BufferedReader(FileReader(file)).use { br ->
+                br.readLine()
+                br.readLine()
+                br.readLine()
+                br.readLine()
+                br.readLine()
                 var message: StringBuilder? = null
                 var read: String?
                 while (br.readLine().also { read = it } != null) {
@@ -182,7 +248,7 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
                 if (message != null) {
                     Log.i("parseChatFile", "[6] [Null체크] [마지막 메시지 - 메시지 파싱 시작]")
                     parseMessage(message.toString().trim())
-                    insertData(Chat(title, date, size, filePath, startDate, endDate))
+                    insertData(chat)
                 } else {
                     Log.w(TAG, "[6] [Null체크] [Null!!]")
                 }
@@ -191,17 +257,17 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-        isComplete!!.postValue(true)
     }
 
     /**
      * chats, messages, keywords Insert
      */
     private fun insertData(chat: Chat) {
-        val chatId = insertChat(chat)
-        Thread.sleep(1000)
-        insertMessages(messages.map { it.copy(chatId = chatId) })
-        insertKeywords(keywords.map { it.copy(chatId = chatId) })
+        deleteMessagesAndKeywords(chat.id)
+        insertMessages(messages.map { it.copy(chatId = chat.id) })
+        insertKeywords(keywords.map { it.copy(chatId = chat.id) })
+        chat.isComplete = true
+        updateChat(chat)
     }
 
     /**

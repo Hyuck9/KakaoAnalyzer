@@ -5,17 +5,24 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialog
 import kotlinx.android.synthetic.main.custom_dialog.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import me.hyuck.kakaoanalyzer.R
 import me.hyuck.kakaoanalyzer.db.entity.Chat
+import me.hyuck.kakaoanalyzer.ui.ChatViewModel
 import me.hyuck.kakaoanalyzer.ui.statistics.StatisticsActivity
 import me.hyuck.kakaoanalyzer.util.DateUtils
+import me.hyuck.kakaoanalyzer.util.FileUtils
 import java.util.*
 
-class CustomDialog(context: Context, var chat: Chat) : AppCompatDialog(context) {
+class CustomDialog(context: Context, var chat: Chat, val viewModel: ChatViewModel) : AppCompatDialog(context) {
 
     private val calendar = GregorianCalendar.getInstance()
 
@@ -37,6 +44,7 @@ class CustomDialog(context: Context, var chat: Chat) : AppCompatDialog(context) 
         endDate.text = DateUtils.convertDateToStringFormat(chat.endDate, "yyyy-MM-dd")
         initDatePicker()
         initButtonClickEvent()
+        setCancelable(false)
     }
 
     private fun initDatePicker() {
@@ -72,16 +80,38 @@ class CustomDialog(context: Context, var chat: Chat) : AppCompatDialog(context) 
         }
     }
 
+    override fun onBackPressed() {
+    }
+
     private fun initButtonClickEvent() {
         btNegative.setOnClickListener {
             dismiss()
         }
 
         btPositive.setOnClickListener {
-            dismiss()
-                val intent = Intent(context, StatisticsActivity::class.java)
-                intent.putExtra(StatisticsActivity.EXTRA_CHAT, chat)
-                context.startActivity(intent)
+            btPositive.isEnabled = false
+            btNegative.isEnabled = false
+            loading_progress.visibility = View.VISIBLE
+
+            GlobalScope.launch(Dispatchers.Default) {
+                val isComplete = viewModel.getParseComplete(chat.id)
+                if ( isComplete == null) {
+                    Log.d("TEST", "CHAT(id=${chat.id}) is null")
+                    if (FileUtils.deleteChatFile(chat)) {
+                        viewModel.deleteChat(chat)
+                        Toast.makeText(context, "CHAT(id=${chat.id}) 삭제 성공", Toast.LENGTH_SHORT).show()
+                    }
+                    dismiss()
+                } else {
+                    if ( !isComplete ) {
+                        viewModel.parseFile(chat)
+                    }
+                    dismiss()
+                    val intent = Intent(context, StatisticsActivity::class.java)
+                    intent.putExtra(StatisticsActivity.EXTRA_CHAT, chat)
+                    context.startActivity(intent)
+                }
+            }
         }
     }
 
