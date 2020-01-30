@@ -70,7 +70,7 @@ class ParticipantViewModel(application: Application): AndroidViewModel(applicati
     }
 
     fun getOneOnOneAnalyticsInfo(messageList: List<Message>): OneOnOneAnalyticsInfo {
-        val title = allReplies.filter { it.userName != "회원님" }.distinctBy { it.userName }[0].userName
+        val title = messageList.filter { it.userName != "회원님" }.distinctBy { it.userName }[0].userName
         val oneOnOneAnalyticsInfo = OneOnOneAnalyticsInfo(title)
 
         val userFirstList = firstMessages.filter { it.userName == "회원님" }
