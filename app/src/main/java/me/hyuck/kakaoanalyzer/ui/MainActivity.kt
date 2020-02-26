@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if ( viewModel.isChatExsist() ) {
+        if ( viewModel.isChatExist() ) {
             viewModel.parseChatInfo()
         }
     }

@@ -96,7 +96,7 @@ class ChatViewModel(application: Application): AndroidViewModel(application) {
     /**
      * txt 파일이 있는지 유무
      */
-    fun isChatExsist(): Boolean {
+    fun isChatExist(): Boolean {
         val files = getFileList()
         return files != null && files.isNotEmpty()
     }
