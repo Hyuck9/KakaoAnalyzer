@@ -17,6 +17,9 @@ import java.util.*
     )],
     indices = [Index(value = ["chatId"])]
 )
-data class Keyword(var chatId:Long, var userName:String, var keyword:String, var dateTime:Date) {
+data class Keyword(var chatId:Long,
+                   var userName:String,
+                   var keyword:String,
+                   var dateTime:Date) {
     @PrimaryKey(autoGenerate = true) var id: Long = 0
 }

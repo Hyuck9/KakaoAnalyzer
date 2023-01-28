@@ -17,6 +17,10 @@ import java.util.*
     )],
     indices = [Index(value = ["chatId"])]
 )
-data class Message(var chatId:Long, var dateTime: Date, var userName: String, var msgContent:String, var hour: Int) {
+data class Message(var chatId:Long,
+                   var dateTime: Date,
+                   var userName: String,
+                   var msgContent:String,
+                   var hour: Int) {
     @PrimaryKey(autoGenerate = true) var id: Long = 0
 }
